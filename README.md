@@ -37,6 +37,9 @@ Plugins](https://github.com/unixorn/awesome-zsh-plugins/).
 ## Usage
 
 ```sh
+just bench base  # empty ~/.zshrc
+
+just bench antibody
 just bench antigen
 just bench sheldon
 just bench zplug

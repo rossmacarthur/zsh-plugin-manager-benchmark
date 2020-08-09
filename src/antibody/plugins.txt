@@ -1,0 +1,28 @@
+# To update:
+# Copy README and replace `^- \[(.*)\].*` with `$1`
+zsh-users/zsh-autosuggestions
+wting/autojump
+zsh-users/zsh-syntax-highlighting
+StackExchange/blackbox
+sobolevn/git-secret
+b4b4r07/enhancd
+fcambus/ansiweather
+chriskempson/base16-shell
+supercrabtree/k
+zsh-users/zsh-history-substring-search
+wfxr/forgit
+zdharma/fast-syntax-highlighting
+iam4x/zsh-iterm-touchbar
+unixorn/git-extra-commands
+MichaelAquilina/zsh-you-should-use
+mfaerevaag/wd
+zsh-users/zaw
+Tarrasch/zsh-autoenv
+mafredri/zsh-async
+djui/alias-tips
+agkozak/zsh-z
+changyuheng/fz
+b4b4r07/emoji-cli
+Tarrasch/zsh-bd
+Vifon/deer
+zdharma/history-search-multi-word

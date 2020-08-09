@@ -9,6 +9,9 @@ build-base:
 _docker-args KIND:
     #!/usr/bin/env bash
     case {{ KIND }} in
+        antibody )
+            echo "-v $PWD/src/antibody/plugins.txt:/root/.antibody/plugins.txt"
+            ;;
         sheldon )
             echo "-v $PWD/src/sheldon/plugins.toml:/root/.sheldon/plugins.toml"
             ;;
