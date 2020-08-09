@@ -34,31 +34,10 @@ Plugins](https://github.com/unixorn/awesome-zsh-plugins/).
 - [Vifon/deer](https://github.com/Vifon/deer)
 - [zdharma/history-search-multi-word](https://github.com/zdharma/history-search-multi-word)
 
-## _base
+## Usage
 
 ```sh
-docker build \
-    --tag zsh-plugin-manager-benchmark:base \
-    --file src/_base/Dockerfile \
-    src/_base
-docker run \
-    -v $PWD/src/sheldon/zshrc:/root/.zshrc \
-    -it zsh-plugin-manager-benchmark:base \
-    hyperfine --warmup 3 "zsh -ic 'exit'"
+just bench antigen
+just bench sheldon
+just bench zplug
 ```
-
-## sheldon
-
-```sh
-docker build \
-    --tag zsh-plugin-manager-benchmark:sheldon \
-    --file src/sheldon/Dockerfile \
-    src/sheldon
-docker run \
-    -v $PWD/src/sheldon/zshrc:/root/.zshrc \
-    -v $PWD/src/sheldon/root:/root/.sheldon \
-    -it zsh-plugin-manager-benchmark:sheldon \
-    hyperfine --warmup 3 "zsh -ic 'exit'"
-```
-
-## zplug

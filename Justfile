@@ -1,58 +1,34 @@
-# Base
-# --------------------------------------------------------------------------- #
+# Show this message and exit.
+help:
+    @just --list
 
+# Build a base image to use for benchmarking.
 build-base:
-    docker build \
-        --tag zsh-plugin-manager-benchmark:base \
-        --file src/_base/Dockerfile \
-        src/_base
+    docker build --tag zsh-plugin-manager-benchmark .
 
-bench-base: build-base
+_docker-args KIND:
+    #!/usr/bin/env bash
+    case {{ KIND }} in
+        sheldon )
+            echo "-v $PWD/src/sheldon/plugins.toml:/root/.sheldon/plugins.toml"
+            ;;
+        * )
+            ;;
+    esac
+
+# Run a command in the Docker container.
+run KIND +ARGS:
+    #!/usr/bin/env bash -x
     docker run \
-        -v $PWD/src/sheldon/zshrc:/root/.zshrc \
-        -it zsh-plugin-manager-benchmark:base \
-        hyperfine --warmup 3 "zsh --interactive -c 'exit'"
+        $(just _docker-args {{ KIND }}) \
+        -v $PWD/src/{{ KIND }}/zshrc:/root/.zshrc \
+        -it zsh-plugin-manager-benchmark \
+        {{ ARGS }}
 
-# Sheldon
-# --------------------------------------------------------------------------- #
+# Benchmark the given type of plugin manager.
+bench KIND: build-base
+    just run {{ KIND }} 'hyperfine --warmup 3 "zsh -ic exit"'
 
-build-sheldon: build-base
-    docker build \
-        --tag zsh-plugin-manager-benchmark:sheldon \
-        --file src/sheldon/Dockerfile \
-        src/sheldon
-
-bench-sheldon: build-sheldon
-    docker run \
-        -v $PWD/src/sheldon/zshrc:/root/.zshrc \
-        -v $PWD/src/sheldon/plugins.toml:/root/.sheldon/plugins.toml \
-        -it zsh-plugin-manager-benchmark:sheldon \
-        hyperfine --warmup 3 "zsh --interactive -c 'exit'"
-
-run-sheldon: build-sheldon
-    docker run \
-        -v $PWD/src/sheldon/zshrc:/root/.zshrc \
-        -v $PWD/src/sheldon/plugins.toml:/root/.sheldon/plugins.toml \
-        -it zsh-plugin-manager-benchmark:sheldon \
-        zsh
-
-# Zplug
-# --------------------------------------------------------------------------- #
-
-build-zplug: build-base
-    docker build \
-        --tag zsh-plugin-manager-benchmark:zplug \
-        --file src/zplug/Dockerfile \
-        src/zplug
-
-bench-zplug: build-zplug
-    docker run \
-        -v $PWD/src/zplug/zshrc:/root/.zshrc \
-        -it zsh-plugin-manager-benchmark:zplug \
-        hyperfine --warmup 3 "zsh --interactive -c 'exit'"
-
-run-zplug: build-zplug
-    docker run \
-        -v $PWD/src/zplug/zshrc:/root/.zshrc \
-        -it zsh-plugin-manager-benchmark:zplug \
-        zsh
+# Open a (Docker) shell using the given type of plugin manager.
+shell KIND: build-base
+    just run {{ KIND }} zsh

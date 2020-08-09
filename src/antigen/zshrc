@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+
+source /root/antigen.zsh
+
+antigen bundle "zsh-users/zsh-autosuggestions"
+antigen bundle "wting/autojump"
+antigen bundle "zsh-users/zsh-syntax-highlighting"
+antigen bundle "StackExchange/blackbox"
+antigen bundle "sobolevn/git-secret"
+antigen bundle "b4b4r07/enhancd"
+antigen bundle "fcambus/ansiweather"
+antigen bundle "chriskempson/base16-shell"
+antigen bundle "supercrabtree/k"
+antigen bundle "zsh-users/zsh-history-substring-search"
+antigen bundle "wfxr/forgit"
+antigen bundle "zdharma/fast-syntax-highlighting"
+antigen bundle "iam4x/zsh-iterm-touchbar"
+antigen bundle "unixorn/git-extra-commands"
+antigen bundle "MichaelAquilina/zsh-you-should-use"
+antigen bundle "mfaerevaag/wd"
+antigen bundle "zsh-users/zaw"
+antigen bundle "Tarrasch/zsh-autoenv"
+antigen bundle "mafredri/zsh-async"
+antigen bundle "djui/alias-tips"
+antigen bundle "agkozak/zsh-z"
+antigen bundle "changyuheng/fz"
+antigen bundle "b4b4r07/emoji-cli"
+antigen bundle "Tarrasch/zsh-bd"
+antigen bundle "Vifon/deer"
+antigen bundle "zdharma/history-search-multi-word"
+
+antigen apply
