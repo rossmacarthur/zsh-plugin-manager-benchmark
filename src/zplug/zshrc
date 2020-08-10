@@ -1,11 +1,6 @@
-#!/usr/bin/env
-
-# To update:
-# Copy README and replace `^- \[(.*)\].*` with `zplug "$1"`
-
+#!/usr/bin/env zsh
 export ZPLUG_HOME=/root/.zplug
 source "$ZPLUG_HOME/init.zsh"
-
 zplug "zsh-users/zsh-autosuggestions"
 zplug "wting/autojump"
 zplug "zsh-users/zsh-syntax-highlighting"
@@ -32,11 +27,5 @@ zplug "b4b4r07/emoji-cli"
 zplug "Tarrasch/zsh-bd"
 zplug "Vifon/deer"
 zplug "zdharma/history-search-multi-word"
-
-# Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    zplug install
-fi
-
-# Then, source plugins and add commands to $PATH
+! zplug check --verbose && zplug install
 zplug load --verbose

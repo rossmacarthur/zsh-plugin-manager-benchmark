@@ -1,4 +1,3 @@
 #!/usr/bin/env zsh
-
 source <(antibody init)
 antibody bundle < ~/.antibody/plugins.txt

@@ -36,11 +36,12 @@ Plugins](https://github.com/unixorn/awesome-zsh-plugins/).
 
 ## Usage
 
+To benchmark the 'install' step run
 ```sh
-just bench base  # empty ~/.zshrc
+./bench.sh install
+```
 
-just bench antibody
-just bench antigen
-just bench sheldon
-just bench zplug
+To benchmark the 'load' step run
+```sh
+./bench.sh load
 ```

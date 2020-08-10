@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
-
 source /root/antigen.zsh
-
 antigen bundle "zsh-users/zsh-autosuggestions"
 antigen bundle "wting/autojump"
 antigen bundle "zsh-users/zsh-syntax-highlighting"
@@ -28,5 +26,4 @@ antigen bundle "b4b4r07/emoji-cli"
 antigen bundle "Tarrasch/zsh-bd"
 antigen bundle "Vifon/deer"
 antigen bundle "zdharma/history-search-multi-word"
-
 antigen apply
