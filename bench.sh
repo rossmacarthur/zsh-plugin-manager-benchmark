@@ -57,6 +57,18 @@ update_plugins() {
         done
     fi
 
+    # Zinit
+    if [ -z "$kind" ] || [ "$kind" = "zinit" ]; then
+        echo '#!/usr/bin/env zsh' > src/zinit/zshrc
+        echo 'source "/root/.zinit/bin/zinit.zsh"' >> src/zinit/zshrc
+        echo 'autoload -Uz _zinit' >> src/zinit/zshrc
+        echo '(( ${+_comps} )) && _comps[zinit]=_zinit' >> src/zinit/zshrc
+        echo 'zinit for \' >> src/zinit/zshrc
+        for plugin in $plugins; do
+            echo "  light-mode $plugin \\" >> src/zinit/zshrc
+        done
+    fi
+
     # Zplug
     if [ -z "$kind" ] || [ "$kind" = "zplug" ]; then
         echo '#!/usr/bin/env zsh' > src/zplug/zshrc
@@ -120,10 +132,10 @@ docker_run() {
 bench_install() {
     local kind=$1
 
-    update_plugins "$kind" || return 1
-    build_docker_image || return 1
+    update_plugins "$kind" || err "failed to update plugins"
+    build_docker_image || err "failed to build docker image"
 
-    for k in antibody antigen sheldon zplug; do
+    for k in antibody antigen sheldon zinit zplug; do
         if [ -z "$kind" ] || [ "$k" = "$kind" ]; then
             docker_run "$k" \
                 hyperfine \
@@ -138,10 +150,10 @@ bench_install() {
 bench_load() {
     local kind=$1
 
-    update_plugins "$kind" || return 1
-    build_docker_image || return 1
+    update_plugins "$kind" || err "failed to update plugins"
+    build_docker_image || err "failed to build docker image"
 
-    for k in antibody antigen sheldon zplug; do
+    for k in antibody antigen sheldon zinit zplug; do
         if [ -z "$kind" ] || [ "$k" = "$kind" ]; then
             docker_run "$k" \
                 hyperfine \
@@ -168,7 +180,7 @@ main() {
                 fi
                 kind=$1
                 ;;
-            update-plugins | install | load )
+            update-plugins | install | load | run )
                 if [ -z "$cmd" ]; then
                     cmd=$1
                 else
@@ -194,6 +206,9 @@ main() {
             ;;
         load )
             bench_load "$kind"
+            ;;
+        run )
+            docker_run "$kind" zsh
             ;;
         * )
             err "unreachable\n"

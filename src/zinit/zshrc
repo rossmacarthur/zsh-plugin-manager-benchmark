@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+source "/root/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+zinit for \
+  light-mode zsh-users/zsh-autosuggestions \
+  light-mode wting/autojump \
+  light-mode zsh-users/zsh-syntax-highlighting \
+  light-mode StackExchange/blackbox \
+  light-mode sobolevn/git-secret \
+  light-mode b4b4r07/enhancd \
+  light-mode fcambus/ansiweather \
+  light-mode chriskempson/base16-shell \
+  light-mode supercrabtree/k \
+  light-mode zsh-users/zsh-history-substring-search \
+  light-mode wfxr/forgit \
+  light-mode zdharma/fast-syntax-highlighting \
+  light-mode iam4x/zsh-iterm-touchbar \
+  light-mode unixorn/git-extra-commands \
+  light-mode MichaelAquilina/zsh-you-should-use \
+  light-mode mfaerevaag/wd \
+  light-mode zsh-users/zaw \
+  light-mode Tarrasch/zsh-autoenv \
+  light-mode mafredri/zsh-async \
+  light-mode djui/alias-tips \
+  light-mode agkozak/zsh-z \
+  light-mode changyuheng/fz \
+  light-mode b4b4r07/emoji-cli \
+  light-mode Tarrasch/zsh-bd \
+  light-mode Vifon/deer \
+  light-mode zdharma/history-search-multi-word \
