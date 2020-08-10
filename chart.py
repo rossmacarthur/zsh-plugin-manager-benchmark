@@ -33,7 +33,7 @@ def chart(ty):
     sns.set()
     g = sns.barplot(data=df[df.type == ty], x='kind', y='times', palette='pastel',)
     g.set(
-        title=f'{ty.title()} time', xlabel='Plugin manager', ylabel='Time taken (secs)',
+        title=f'{ty.title()} time', xlabel='', ylabel='Time taken (secs)',
     )
     filename = f'results/{ty}.png'
     g.figure.savefig(filename)
