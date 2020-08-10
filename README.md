@@ -36,12 +36,35 @@ Plugins](https://github.com/unixorn/awesome-zsh-plugins/).
 
 ## Usage
 
-To benchmark the 'install' step run
+To benchmark the 'install' step run the following.
 ```sh
 ./bench.sh install
 ```
 
-To benchmark the 'load' step run
+To benchmark the 'load' step run the following.
 ```sh
 ./bench.sh load
 ```
+
+These commands will output results to `results/`. You can then create charts
+from these results using the following.
+
+```sh
+./chart.py install
+```
+
+or
+
+```sh
+./chart.py load
+```
+
+## License
+
+Licensed under either of
+
+- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or
+  http://www.apache.org/licenses/LICENSE-2.0)
+- MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+
+at your option.

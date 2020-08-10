@@ -129,8 +129,7 @@ bench_install() {
                 hyperfine \
                 --prepare "$(clean_command "$k")" \
                 --warmup 3 \
-                --time-unit millisecond \
-                --export-json "/target/results-install-$k.json" \
+                --export-json "/target/install-$k.json" \
                 'zsh -ic exit'
         fi
     done
@@ -147,8 +146,7 @@ bench_load() {
             docker_run "$k" \
                 hyperfine \
                 --warmup 3 \
-                --time-unit millisecond \
-                --export-json "/target/results-load-$k.json" \
+                --export-json "/target/load-$k.json" \
                 'zsh -ic exit'
         fi
     done
