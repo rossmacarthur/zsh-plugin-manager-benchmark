@@ -33,7 +33,10 @@ install in parallel vs sequential.
 
 The below image contains the latest *load time* results. This is the metric we
 care about most because its about the time it takes to open a new shell until we
-get a usable prompt.
+get a usable prompt. Note: all plugins with zinit were run using `wait` which
+defers the plugin loading until after a prompt. Which means this time does not
+included the time taken to actually source the plugins, which is why it is so
+fast.
 
 ![Load time](results/load.png)
 
@@ -49,9 +52,9 @@ Versions
 - antibody v6.1.0
 - antigen v2.2.2
 - sheldon v0.5.3
-- zgen (master @ 0b669d2)
-- zinit (master @ 5e841ab3)
-- zplug (master @ c4dea76)
+- zgen master @ 0b669d2
+- zinit master @ 5e841ab3
+- zplug master @ c4dea76
 
 ## Usage
 
