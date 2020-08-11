@@ -27,5 +27,5 @@ zplug "b4b4r07/emoji-cli"
 zplug "Tarrasch/zsh-bd"
 zplug "Vifon/deer"
 zplug "zdharma/history-search-multi-word"
-! zplug check --verbose && zplug install
-zplug load --verbose
+! zplug check && zplug install
+zplug load

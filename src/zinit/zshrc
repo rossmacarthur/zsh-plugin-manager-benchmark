@@ -1,8 +1,6 @@
 #!/usr/bin/env zsh
 source "/root/.zinit/bin/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-zinit for \
+zinit wait lucid for \
   light-mode zsh-users/zsh-autosuggestions \
   light-mode wting/autojump \
   light-mode zsh-users/zsh-syntax-highlighting \
