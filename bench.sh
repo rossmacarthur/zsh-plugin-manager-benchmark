@@ -26,6 +26,7 @@ Commands:
   install         Benchmark the 'install' step.
   load            Benchmark the 'load' step.
   run             Open 'zsh' with a particular plugin manager.
+  version         Output the versions of the plugin managers.
 EOF
 }
 
@@ -142,8 +143,6 @@ _update_plugins() {
     if [ -z "$kind" ] || [ "$kind" = "zinit" ]; then
         echo '#!/usr/bin/env zsh' > src/zinit/zshrc
         echo 'source "/root/.zinit/bin/zinit.zsh"' >> src/zinit/zshrc
-        echo 'autoload -Uz _zinit' >> src/zinit/zshrc
-        echo '(( ${+_comps} )) && _comps[zinit]=_zinit' >> src/zinit/zshrc
         echo 'zinit for \' >> src/zinit/zshrc
         for plugin in $plugins; do
             echo "  light-mode $plugin \\" >> src/zinit/zshrc
@@ -158,8 +157,8 @@ _update_plugins() {
         for plugin in $plugins; do
             echo "zplug \"$plugin\"" >> src/zplug/zshrc
         done
-        echo '! zplug check --verbose && zplug install' >> src/zplug/zshrc
-        echo 'zplug load --verbose' >> src/zplug/zshrc
+        echo '! zplug check && zplug install' >> src/zplug/zshrc
+        echo 'zplug load' >> src/zplug/zshrc
     fi
 }
 
@@ -222,6 +221,52 @@ command_run() {
     _docker_run "$kind" zsh
 }
 
+# Runs the 'versions' command.
+#
+# This outputs the current version for each plugin manager.
+command_versions() {
+    local kind=$1
+    local version
+
+    _docker_build || err "Error: failed to build docker image"
+
+    # Antibody
+    if [ -z "$kind" ] || [ "$kind" = "antibody" ]; then
+        version=$(_docker_run base antibody --version 2>&1 | awk '{print $3}')
+        echo "antibody v$version"
+    fi
+
+    # Antigen
+    if [ -z "$kind" ] || [ "$kind" = "antigen" ]; then
+        version=$(_docker_run base zsh -c 'source /root/antigen.zsh && antigen-version' | awk '{print $2}')
+        echo "antigen $version"
+    fi
+
+    # Sheldon
+    if [ -z "$kind" ] || [ "$kind" = "sheldon" ]; then
+        version=$(_docker_run base sheldon --version | awk '{print $2}')
+        echo "sheldon v$version"
+    fi
+
+    # Zgen
+    if [ -z "$kind" ] || [ "$kind" = "zgen" ]; then
+        version=$(_docker_run base git -C /root/.zgen rev-parse --short HEAD)
+        echo "zgen master @ $version"
+    fi
+
+    # Zinit
+    if [ -z "$kind" ] || [ "$kind" = "zinit" ]; then
+        version=$(_docker_run base git -C /root/.zinit/bin rev-parse --short HEAD)
+        echo "zinit master @ $version"
+    fi
+
+    # Zplug
+    if [ -z "$kind" ] || [ "$kind" = "zplug" ]; then
+        version=$(_docker_run base git -C /root/.zplug rev-parse --short HEAD)
+        echo "zplug master @ $version"
+    fi
+}
+
 main() {
     local cmd kind
 
@@ -240,7 +285,7 @@ main() {
                 fi
                 kind=$1
                 ;;
-            update-plugins | install | load | run )
+            update-plugins | install | load | run | versions )
                 if [ -z "$cmd" ]; then
                     cmd=$1
                 else
@@ -269,6 +314,9 @@ main() {
             ;;
         run )
             command_run "$kind"
+            ;;
+        versions )
+            command_versions "$kind"
             ;;
         * )
             err "unreachable\n"
