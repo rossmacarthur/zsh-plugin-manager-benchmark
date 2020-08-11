@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
+# Supported types of plugin managers. ('base' is an empty .zshrc)
+PLUGIN_MANAGERS="base antibody antigen sheldon zinit zplug"
+
+# Prints an error message and exits.
 err() {
     printf "$@"
     exit 1
 }
 
+# Prints out the command-line usage.
 usage() {
     cat 1>&2 <<EOF
 Benchmark different plugin managers.
@@ -20,23 +25,85 @@ Commands:
   update-plugins  Update the plugin manager source from plugins.txt.
   install         Benchmark the 'install' step.
   load            Benchmark the 'load' step.
+  run             Open 'zsh' with a particular plugin manager.
 EOF
 }
 
+# Prints out an error message and the usage and exits.
 usage_err() {
     printf "$@"
     usage
     exit 1
 }
 
-update_plugins() {
+# Outputs the command to use to reset any plugin manager state.
+_prepare_install() {
+    case $1 in
+        base )
+            echo
+            ;;
+        antibody )
+            echo 'rm -rf /root/.cache/antibody'
+            ;;
+        antigen )
+            echo 'rm -rf /root/.antigen'
+            ;;
+        sheldon )
+            echo 'rm -rf /root/.sheldon/repos /root/.sheldon/downloads /root/.sheldon/plugins.lock'
+            ;;
+        zinit )
+            echo 'rm -rf /root/.zinit/completions /root/.zinit/plugins /root/.zinit/polaris /root/.zinit/services /root/.zinit/snippets'
+            ;;
+        zplug )
+            echo 'rm -rf /root/.zplug/repos'
+            ;;
+        * )
+            return 1
+    esac
+}
+
+# Build a Docker container for benchmarking.
+_docker_build() {
+    docker build --tag zsh-plugin-manager-benchmark . >/dev/null
+}
+
+# Outputs extra arguments for the Docker run command for the given plugin manager.
+_docker_args() {
+    case $1 in
+        antibody )
+            echo "-v $PWD/src/antibody/plugins.txt:/root/.antibody/plugins.txt"
+            ;;
+        sheldon )
+            echo "-v $PWD/src/sheldon/plugins.toml:/root/.sheldon/plugins.toml"
+            ;;
+        * )
+            ;;
+    esac
+}
+
+# Runs the given command in Docker with the given plugin manager setup.
+_docker_run() {
+    local kind=$1; shift
+    local args
+    args=$(_docker_args "$kind")
+    test $? -ne 0 && err "Error: failed to get Docker args for %s\n" "$kind"
+    docker run \
+        $args \
+        -v "$PWD/results:/target" \
+        -v "$PWD/src/$kind/zshrc:/root/.zshrc" \
+        -it zsh-plugin-manager-benchmark \
+        "$@"
+}
+
+# Updates src/ with the plugins in plugins.txt.
+_update_plugins() {
     local kind=$1
 
-    plugins=$(cat plugins.txt)
+    plugins=$(cat src/plugins.txt)
 
     # Antibody
     if [ -z "$kind" ] || [ "$kind" = "antibody" ]; then
-        cp plugins.txt src/antibody/plugins.txt
+        cp src/plugins.txt src/antibody/plugins.txt
     fi
 
     # Antigen
@@ -82,64 +149,28 @@ update_plugins() {
     fi
 }
 
-clean_command() {
-    case $1 in
-        antibody )
-            echo 'rm -rf /root/.cache/antibody'
-            ;;
-        antigen )
-            echo 'rm -rf /root/.antigen'
-            ;;
-        sheldon )
-            echo 'rm -rf /root/.sheldon/repos /root/.sheldon/plugins.lock'
-            ;;
-        zplug )
-            echo 'rm -rf /root/.zplug/repos'
-            ;;
-        * )
-            err "unknown kind '%s'" $kind
-    esac
-}
-
-docker_args() {
-    case $1 in
-        antibody )
-            echo "-v $PWD/src/antibody/plugins.txt:/root/.antibody/plugins.txt"
-            ;;
-        sheldon )
-            echo "-v $PWD/src/sheldon/plugins.toml:/root/.sheldon/plugins.toml"
-            ;;
-        * )
-            ;;
-    esac
-}
-
-build_docker_image() {
-    docker build --tag zsh-plugin-manager-benchmark . >/dev/null
-}
-
-docker_run() {
-    local kind=$1; shift
-    local args=$(docker_args "$kind")
-    docker run \
-        $args \
-        -v "$PWD/results:/target" \
-        -v "$PWD/src/$kind/zshrc:/root/.zshrc" \
-        -it zsh-plugin-manager-benchmark \
-        "$@"
-}
-
-bench_install() {
+# Runs the 'update-plugins' command.
+command_update_plugins() {
     local kind=$1
+    _update_plugins "$kind"
+}
 
-    update_plugins "$kind" || err "failed to update plugins"
-    build_docker_image || err "failed to build docker image"
-
-    for k in antibody antigen sheldon zinit zplug; do
+# Runs the 'install' command.
+#
+# This benchmarks the 'install' step for the given or all plugin managers.
+command_install() {
+    local kind=$1
+    local prepare
+    _update_plugins "$kind" || err "Error: failed to update plugins"
+    _docker_build || err "Error: failed to build docker image"
+    for k in $PLUGIN_MANAGERS; do
         if [ -z "$kind" ] || [ "$k" = "$kind" ]; then
-            docker_run "$k" \
+            [ -n "$kind" ] && echo -e "\033[1;32mBenchmarking $kind\033[0m "
+            prepare=$(_prepare_install "$k")
+            test $? -ne 0 && err "Error: failed to get prepare command for %s\n" "$k"
+            _docker_run "$k" \
                 hyperfine \
-                --prepare "$(clean_command "$k")" \
+                --prepare "$prepare" \
                 --warmup 3 \
                 --export-json "/target/install-$k.json" \
                 'zsh -ic exit'
@@ -147,21 +178,34 @@ bench_install() {
     done
 }
 
-bench_load() {
+# Runs the 'load' command.
+#
+# This benchmarks the 'load' step for the given or all plugin managers.
+command_load() {
     local kind=$1
-
-    update_plugins "$kind" || err "failed to update plugins"
-    build_docker_image || err "failed to build docker image"
-
-    for k in antibody antigen sheldon zinit zplug; do
+    _update_plugins "$kind" || err "Error: failed to update plugins"
+    _docker_build || err "Error: failed to build docker image"
+    for k in $PLUGIN_MANAGERS; do
         if [ -z "$kind" ] || [ "$k" = "$kind" ]; then
-            docker_run "$k" \
+            [ -z "$kind" ] && echo "Benchmarking $kind"
+            _docker_run "$k" \
                 hyperfine \
                 --warmup 3 \
                 --export-json "/target/load-$k.json" \
                 'zsh -ic exit'
         fi
     done
+}
+
+# Runs the 'run' command.
+#
+# This opens 'zsh' setup for the given plugin manager.
+command_run() {
+    local kind=$1
+    [ -z "$kind" ] && err "Error: --kind is a required option for this command\n"
+    _update_plugins "$kind" || err "Error: failed to update plugins"
+    _docker_build || err "Error: failed to build docker image"
+    _docker_run "$kind" zsh
 }
 
 main() {
@@ -177,6 +221,8 @@ main() {
                 shift
                 if [ -z "$1" ]; then
                     usage_err "Error: --kind option requires an argument\n\n"
+                elif [[ "$PLUGIN_MANAGERS" != *"$1"* ]]; then
+                    err "Error: --kind value should be one of: $PLUGIN_MANAGERS\n"
                 fi
                 kind=$1
                 ;;
@@ -199,16 +245,16 @@ main() {
             usage
             ;;
         update-plugins )
-            update_plugins "$kind"
+            command_update_plugins "$kind"
             ;;
         install )
-            bench_install "$kind"
+            command_install "$kind"
             ;;
         load )
-            bench_load "$kind"
+            command_load "$kind"
             ;;
         run )
-            docker_run "$kind" zsh
+            command_run "$kind"
             ;;
         * )
             err "unreachable\n"

@@ -6,7 +6,7 @@ The plugins used for benchmarking were extracted using
 [awesome-star-count](https://github.com/rossmacarthur/awesome-star-count). They
 are 26 of the most popular plugins (by GitHub stars) listed in [Awesome Zsh
 Plugins](https://github.com/unixorn/awesome-zsh-plugins/). See
-[plugins.txt](./plugins.txt).
+[plugins.txt](./src/plugins.txt).
 
 ## Usage
 
