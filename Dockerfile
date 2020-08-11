@@ -24,6 +24,9 @@ RUN curl -fLsS -o /root/antigen.zsh https://git.io/antigen
 RUN curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
     | bash -s -- --repo "rossmacarthur/sheldon" --to /usr/local/bin
 
+# Zgen
+RUN git clone https://github.com/tarjoilija/zgen.git /root/.zgen
+
 # Zinit
 RUN mkdir -p /root/.zinit \
     && git clone https://github.com/zdharma/zinit.git /root/.zinit/bin

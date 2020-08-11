@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Supported types of plugin managers. ('base' is an empty .zshrc)
-PLUGIN_MANAGERS="base antibody antigen sheldon zinit zplug"
+PLUGIN_MANAGERS="base antibody antigen sheldon zgen zinit zplug"
 
 # Prints an error message and exits.
 err() {
@@ -40,7 +40,6 @@ usage_err() {
 _prepare_install() {
     case $1 in
         base )
-            echo
             ;;
         antibody )
             echo 'rm -rf /root/.cache/antibody'
@@ -49,10 +48,13 @@ _prepare_install() {
             echo 'rm -rf /root/.antigen'
             ;;
         sheldon )
-            echo 'rm -rf /root/.sheldon/repos /root/.sheldon/downloads /root/.sheldon/plugins.lock'
+            echo 'find /root/.sheldon -mindepth 1 -maxdepth 1 ! -name "plugins.toml" -exec rm -rf {} \;'
+            ;;
+        zgen )
+            echo 'git -C /root/.zgen clean -dffx'
             ;;
         zinit )
-            echo 'rm -rf /root/.zinit/completions /root/.zinit/plugins /root/.zinit/polaris /root/.zinit/services /root/.zinit/snippets'
+            echo 'find /root/.zinit -mindepth 1 -maxdepth 1 ! -name "bin" -exec rm -rf {} \;'
             ;;
         zplug )
             echo 'rm -rf /root/.zplug/repos'
@@ -124,6 +126,18 @@ _update_plugins() {
         done
     fi
 
+    # Zgen
+    if [ -z "$kind" ] || [ "$kind" = "zgen" ]; then
+        echo '#!/usr/bin/env zsh' > src/zgen/zshrc
+        echo 'source "/root/.zgen/zgen.zsh"' >> src/zgen/zshrc
+        echo 'if ! zgen saved; then' >> src/zgen/zshrc
+        for plugin in $plugins; do
+            echo "  zgen load $plugin" >> src/zgen/zshrc
+        done
+        echo '  zgen save' >> src/zgen/zshrc
+        echo 'fi' >> src/zgen/zshrc
+    fi
+
     # Zinit
     if [ -z "$kind" ] || [ "$kind" = "zinit" ]; then
         echo '#!/usr/bin/env zsh' > src/zinit/zshrc
@@ -165,7 +179,7 @@ command_install() {
     _docker_build || err "Error: failed to build docker image"
     for k in $PLUGIN_MANAGERS; do
         if [ -z "$kind" ] || [ "$k" = "$kind" ]; then
-            [ -n "$kind" ] && echo -e "\033[1;32mBenchmarking $kind\033[0m "
+            echo -e "\033[1;32mBenchmarking $k\033[0m "
             prepare=$(_prepare_install "$k")
             test $? -ne 0 && err "Error: failed to get prepare command for %s\n" "$k"
             _docker_run "$k" \
@@ -187,7 +201,7 @@ command_load() {
     _docker_build || err "Error: failed to build docker image"
     for k in $PLUGIN_MANAGERS; do
         if [ -z "$kind" ] || [ "$k" = "$kind" ]; then
-            [ -z "$kind" ] && echo "Benchmarking $kind"
+            echo -e "\033[1;32mBenchmarking $k\033[0m "
             _docker_run "$k" \
                 hyperfine \
                 --warmup 3 \
