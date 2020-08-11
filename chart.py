@@ -16,6 +16,8 @@ def get_data():
             r'(results\-)?(?P<type>(install|load))-(?P<kind>.*)\.json', filename
         ):
             info = match.groupdict()
+            if info['kind'] == 'base':
+                continue
             with open(os.path.join('results', filename), 'r') as f:
                 results = json.load(f)['results']
                 assert len(results) == 1
@@ -31,7 +33,7 @@ def get_data():
 def chart(ty):
     df = get_data()
     sns.set()
-    g = sns.barplot(data=df[df.type == ty], x='kind', y='times', palette='pastel',)
+    g = sns.barplot(data=df[df.type == ty], x='kind', y='times', palette='pastel')
     g.set(
         title=f'{ty.title()} time', xlabel='', ylabel='Time taken (secs)',
     )
