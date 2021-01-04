@@ -8,7 +8,8 @@ Benchmark different Zsh plugin managers.
   [sheldon](https://github.com/rossmacarthur/sheldon),
   [zgen](https://github.com/tarjoilija/zgen),
   [zinit](https://github.com/zdharma/zinit),
-  [zplug](https://github.com/zplug/zplug)
+  [zplug](https://github.com/zplug/zplug),
+  [zpm](https://github.com/zpm-zsh/zpm)
 
 - For each plugin manager the *install time* and the *load time* is tested.
   - install time is the the time taken on the first time loading `~/.zshrc`.
@@ -55,6 +56,7 @@ Versions
 - zgen master @ 0b669d2
 - zinit master @ 5e841ab3
 - zplug master @ c4dea76
+- zpm master @ a8886ab
 
 ## Usage
 
