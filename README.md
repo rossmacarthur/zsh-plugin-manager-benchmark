@@ -3,25 +3,25 @@
 Benchmark different Zsh plugin managers.
 
 - Currently the following plugin managers are benchmarked.
-  [antibody](https://github.com/getantibody/antibody),
-  [antigen](https://github.com/zsh-users/antigen),
-  [sheldon](https://github.com/rossmacarthur/sheldon),
-  [zgen](https://github.com/tarjoilija/zgen),
-  [zinit](https://github.com/zdharma/zinit),
-  [zplug](https://github.com/zplug/zplug),
-  [zpm](https://github.com/zpm-zsh/zpm)
-
-- For each plugin manager the *install time* and the *load time* is tested.
-  - install time is the the time taken on the first time loading `~/.zshrc`.
-  - load time is the time taken for each subsequent load of the `~/.zshrc`.
-
+  - [antibody]
+  - [antigen]
+  - [sheldon]
+  - [zgen]
+  - [zinit]
+  - [zplug]
+  - [zpm]
+- For each plugin manager the *install time* and the *load time* was tested
+  - *install time* is the the time taken on the first time loading `~/.zshrc`.
+  - *load time* is the time taken for each subsequent load of the `~/.zshrc`.
 - 26 of some of the most popular plugins (by GitHub stars) listed in [Awesome
   Zsh Plugins](https://github.com/unixorn/awesome-zsh-plugins/) were used as as
   test case. See [plugins.txt](./src/plugins.txt). The plugins were extracted
-  using
-  [awesome-star-count](https://github.com/rossmacarthur/awesome-star-count).
-- [hyperfine](https://github.com/sharkdp/hyperfine) was used as a benchmarking
-  tool. All benchmarks were run on a quiet cloud VM.
+  using [awesome-star-count].
+- [hyperfine] was used as a benchmarking tool. All benchmarks were run on a
+  quiet cloud VM.
+
+[awesome-star-count]: https://github.com/rossmacarthur/awesome-star-count
+[hyperfine]: https://github.com/sharkdp/hyperfine
 
 ## Results
 
@@ -34,29 +34,38 @@ install in parallel vs sequential.
 
 The below image contains the latest *load time* results. This is the metric we
 care about most because its about the time it takes to open a new shell until we
-get a usable prompt. Note: all plugins with zinit were run using `wait` which
-defers the plugin loading until after a prompt. Which means this time does not
-included the time taken to actually source the plugins, which is why it is so
-fast.
+get a usable prompt.
+
+**Note:** all plugins with zinit were run using `wait` which defers the plugin
+loading until after a prompt. Which means this time does not included the time
+taken to actually source the plugins, which is why it is so fast.
 
 ![Load time](results/load.png)
 
 ### Details
 
-Tested on
+#### Host
 - Vultr.com
 - Ubuntu 20.04
 - 4 CPU
 - 8192 MB RAM
 
-Versions
-- antibody v6.1.0
-- antigen v2.2.2
-- sheldon v0.5.3
-- zgen master @ 0b669d2
-- zinit master @ 5e841ab3
-- zplug master @ c4dea76
-- zpm master @ a8886ab
+#### Versions
+- [antibody] v6.1.1
+- [antigen] v2.2.2
+- [sheldon] v0.6.1
+- [zgen] master @ 0b669d2
+- [zinit] master @ 4457b998
+- [zplug] master @ c4dea76
+- [zpm] master @ 34bd973
+
+[antibody]: https://github.com/getantibody/antibody
+[antigen]: https://github.com/zsh-users/antigen
+[sheldon]: https://github.com/rossmacarthur/sheldon
+[zgen]: https://github.com/tarjoilija/zgen
+[zinit]: https://github.com/zdharma/zinit
+[zplug]: https://github.com/zplug/zplug
+[zpm]: https://github.com/zpm-zsh/zpm
 
 ## Usage
 
