@@ -26,7 +26,7 @@ Commands:
   install         Benchmark the 'install' step.
   load            Benchmark the 'load' step.
   run             Open 'zsh' with a particular plugin manager.
-  version         Output the versions of the plugin managers.
+  versions        Output the versions of the plugin managers.
 EOF
 }
 
