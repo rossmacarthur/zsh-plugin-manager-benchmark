@@ -2,17 +2,26 @@
 
 Benchmark different Zsh plugin managers.
 
-- Currently the following plugin managers are benchmarked.
-  - [antibody]
-  - [antigen]
-  - [sheldon]
-  - [zgen]
-  - [zinit]
-  - [zplug]
-  - [zpm]
-- For each plugin manager the *install time* and the *load time* was tested
-  - *install time* is the the time taken on the first time loading `~/.zshrc`.
-  - *load time* is the time taken for each subsequent load of the `~/.zshrc`.
+### Summary of the results
+
+- [antibody], [antigen], and [sheldon] all have excellent performance in both
+  install time and load time.
+- [zgen] is on par with the above when it comes to load time, but doesn't seem
+  to do installation in parallel.
+- [zinit] comes with built-in deferred loading of plugins and has the best load
+  time performance but has a notably bad install time.
+- [zplug] and [zpm] have notably bad load time performance.
+
+## Features
+
+- The following plugin managers are benchmarked: [antibody], [antigen],
+  [sheldon], [zgen], [zinit], [zplug], [zpm]. (If you would like to add a new
+  plugin manager feel free to open an issue and/or pull request.)
+- For each plugin manager the *install* time and the *load* time was tested
+  - install time is the the time taken on the first time loading `~/.zshrc`
+    until a prompt appears.
+  - load time is the time taken for each subsequent load of the `~/.zshrc` until
+    a prompt appears.
 - 26 of some of the most popular plugins (by GitHub stars) listed in [Awesome
   Zsh Plugins](https://github.com/unixorn/awesome-zsh-plugins/) were used as as
   test case. See [plugins.txt](./src/plugins.txt). The plugins were extracted
@@ -25,22 +34,24 @@ Benchmark different Zsh plugin managers.
 
 ## Results
 
-The below image contains the latest *install time* results. Although install
-time is not as important as load time it is probably at least worth doing the
-install in parallel. From these results its very clear which plugin managers
-install in parallel vs sequential.
+### Install time
 
 ![Install time](results/install.png)
 
-The below image contains the latest *load time* results. This is the metric we
-care about most because its about the time it takes to open a new shell until we
-get a usable prompt.
+Although install time is not as important as load time it is probably at least
+worth doing the install in parallel. From these results its very clear which
+plugin managers install in parallel vs sequential.
+
+### Load time
+
+![Load time](results/load.png)
+
+This is the metric we care about most because its about the time it takes to
+open a new shell until we get a usable prompt.
 
 **Note:** all plugins with zinit were run using `wait` which defers the plugin
 loading until after a prompt. Which means this time does not included the time
 taken to actually source the plugins, which is why it is so fast.
-
-![Load time](results/load.png)
 
 ### Details
 
