@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Supported types of plugin managers. ('base' is an empty .zshrc)
-PLUGIN_MANAGERS="base antibody antigen sheldon zgen zinit zplug"
+PLUGIN_MANAGERS="base antibody antigen sheldon zgen zinit zplug zpm"
 
 # Prints an error message and exits.
 err() {
@@ -59,6 +59,9 @@ _prepare_install() {
             ;;
         zplug )
             echo 'rm -rf /root/.zplug/repos'
+            ;;
+        zpm )
+            echo 'rm -rf "${TMPDIR:-/tmp}/zsh-${UID:-user}"; rm -rf /root/.zpm/plugins; find /root/.zpm -name "*.zwc" -exec rm -f {} \;'
             ;;
         * )
             return 1
@@ -159,6 +162,16 @@ _update_plugins() {
         done
         echo '! zplug check && zplug install' >> src/zplug/zshrc
         echo 'zplug load' >> src/zplug/zshrc
+    fi
+
+    # Zpm
+    if [ -z "$kind" ] || [ "$kind" = "zpm" ]; then
+        echo '#!/usr/bin/env zsh' > src/zpm/zshrc
+        echo 'source "/root/.zpm/zpm.zsh"' >> src/zpm/zshrc
+        echo 'zpm load \' >> src/zpm/zshrc
+        for plugin in $plugins; do
+            echo "  ${plugin},async \\" >> src/zpm/zshrc
+        done
     fi
 }
 
@@ -264,6 +277,12 @@ command_versions() {
     if [ -z "$kind" ] || [ "$kind" = "zplug" ]; then
         version=$(_docker_run base git -C /root/.zplug rev-parse --short HEAD)
         echo "zplug master @ $version"
+    fi
+
+    # Zpm
+    if [ -z "$kind" ] || [ "$kind" = "zpm" ]; then
+        version=$(_docker_run base git -C /root/.zpm rev-parse --short HEAD)
+        echo "zpm master @ $version"
     fi
 }
 

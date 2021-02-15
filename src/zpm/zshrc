@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+source "/root/.zpm/zpm.zsh"
+zpm load \
+  zsh-users/zsh-autosuggestions,async \
+  wting/autojump,async \
+  zsh-users/zsh-syntax-highlighting,async \
+  StackExchange/blackbox,async \
+  sobolevn/git-secret,async \
+  b4b4r07/enhancd,async \
+  fcambus/ansiweather,async \
+  chriskempson/base16-shell,async \
+  supercrabtree/k,async \
+  zsh-users/zsh-history-substring-search,async \
+  wfxr/forgit,async \
+  zdharma/fast-syntax-highlighting,async \
+  iam4x/zsh-iterm-touchbar,async \
+  unixorn/git-extra-commands,async \
+  MichaelAquilina/zsh-you-should-use,async \
+  mfaerevaag/wd,async \
+  zsh-users/zaw,async \
+  Tarrasch/zsh-autoenv,async \
+  mafredri/zsh-async,async \
+  djui/alias-tips,async \
+  agkozak/zsh-z,async \
+  changyuheng/fz,async \
+  b4b4r07/emoji-cli,async \
+  Tarrasch/zsh-bd,async \
+  Vifon/deer,async \
+  zdharma/history-search-multi-word,async \

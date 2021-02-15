@@ -33,3 +33,6 @@ RUN mkdir -p /root/.zinit \
 
 # Zplug
 RUN git clone https://github.com/zplug/zplug /root/.zplug
+
+# Zpm
+RUN git clone --depth 1 https://github.com/zpm-zsh/zpm.git /root/.zpm
