@@ -5,25 +5,25 @@ zpm load \
   wting/autojump,async \
   zsh-users/zsh-syntax-highlighting,async \
   StackExchange/blackbox,async \
-  sobolevn/git-secret,async \
   b4b4r07/enhancd,async \
   fcambus/ansiweather,async \
-  chriskempson/base16-shell,async \
-  supercrabtree/k,async \
   zsh-users/zsh-history-substring-search,async \
+  supercrabtree/k,async \
+  chriskempson/base16-shell,async \
   wfxr/forgit,async \
   zdharma/fast-syntax-highlighting,async \
+  larkery/zsh-histdb,async \
+  MichaelAquilina/zsh-you-should-use,async \
   iam4x/zsh-iterm-touchbar,async \
   unixorn/git-extra-commands,async \
-  MichaelAquilina/zsh-you-should-use,async \
+  marlonrichert/zsh-autocomplete,async \
   mfaerevaag/wd,async \
-  zsh-users/zaw,async \
-  Tarrasch/zsh-autoenv,async \
-  mafredri/zsh-async,async \
-  djui/alias-tips,async \
   agkozak/zsh-z,async \
+  mafredri/zsh-async,async \
+  Tarrasch/zsh-autoenv,async \
+  zsh-users/zaw,async \
+  djui/alias-tips,async \
   changyuheng/fz,async \
   b4b4r07/emoji-cli,async \
   Tarrasch/zsh-bd,async \
-  Vifon/deer,async \
   zdharma/history-search-multi-word,async \

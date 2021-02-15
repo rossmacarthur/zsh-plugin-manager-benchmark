@@ -257,7 +257,7 @@ command_versions() {
 
     # Sheldon
     if [ -z "$kind" ] || [ "$kind" = "sheldon" ]; then
-        version=$(_docker_run base sheldon --version | awk '{print $2}')
+        version=$(_docker_run base sheldon --version | awk '{print $2; exit}')
         echo "sheldon v$version"
     fi
 

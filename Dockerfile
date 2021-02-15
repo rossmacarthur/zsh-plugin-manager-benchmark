@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
     git \
     locales \
     python \
+    python3 \
     zsh
 
 RUN locale-gen en_US.UTF-8
@@ -25,14 +26,14 @@ RUN curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh
     | bash -s -- --repo "rossmacarthur/sheldon" --to /usr/local/bin
 
 # Zgen
-RUN git clone https://github.com/tarjoilija/zgen.git /root/.zgen
+RUN git clone https://github.com/tarjoilija/zgen /root/.zgen
 
 # Zinit
 RUN mkdir -p /root/.zinit \
-    && git clone https://github.com/zdharma/zinit.git /root/.zinit/bin
+    && git clone https://github.com/zdharma/zinit /root/.zinit/bin
 
 # Zplug
 RUN git clone https://github.com/zplug/zplug /root/.zplug
 
 # Zpm
-RUN git clone --depth 1 https://github.com/zpm-zsh/zpm.git /root/.zpm
+RUN git clone --depth 1 https://github.com/zpm-zsh/zpm /root/.zpm

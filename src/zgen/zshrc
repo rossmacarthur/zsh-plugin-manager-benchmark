@@ -5,27 +5,27 @@ if ! zgen saved; then
   zgen load wting/autojump
   zgen load zsh-users/zsh-syntax-highlighting
   zgen load StackExchange/blackbox
-  zgen load sobolevn/git-secret
   zgen load b4b4r07/enhancd
   zgen load fcambus/ansiweather
-  zgen load chriskempson/base16-shell
-  zgen load supercrabtree/k
   zgen load zsh-users/zsh-history-substring-search
+  zgen load supercrabtree/k
+  zgen load chriskempson/base16-shell
   zgen load wfxr/forgit
   zgen load zdharma/fast-syntax-highlighting
+  zgen load larkery/zsh-histdb
+  zgen load MichaelAquilina/zsh-you-should-use
   zgen load iam4x/zsh-iterm-touchbar
   zgen load unixorn/git-extra-commands
-  zgen load MichaelAquilina/zsh-you-should-use
+  zgen load marlonrichert/zsh-autocomplete
   zgen load mfaerevaag/wd
-  zgen load zsh-users/zaw
-  zgen load Tarrasch/zsh-autoenv
-  zgen load mafredri/zsh-async
-  zgen load djui/alias-tips
   zgen load agkozak/zsh-z
+  zgen load mafredri/zsh-async
+  zgen load Tarrasch/zsh-autoenv
+  zgen load zsh-users/zaw
+  zgen load djui/alias-tips
   zgen load changyuheng/fz
   zgen load b4b4r07/emoji-cli
   zgen load Tarrasch/zsh-bd
-  zgen load Vifon/deer
   zgen load zdharma/history-search-multi-word
   zgen save
 fi
