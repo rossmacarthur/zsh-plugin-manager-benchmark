@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 source "/root/.zinit/bin/zinit.zsh"
-zinit wait lucid for \
+zinit for \
   light-mode zsh-users/zsh-autosuggestions \
   light-mode wting/autojump \
   light-mode zsh-users/zsh-syntax-highlighting \
