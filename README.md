@@ -8,8 +8,6 @@ Benchmark different Zsh plugin managers.
   install time and load time.
 - [zgen] is on par with the above when it comes to load time, but doesn't seem
   to do installation in parallel.
-- [zinit] comes with built-in deferred loading of plugins and has the best load
-  time performance but has a notably bad install time.
 - [zplug] and [zpm] have notably bad load time performance.
 
 ## Features
@@ -36,7 +34,7 @@ Benchmark different Zsh plugin managers.
 
 ### Install time
 
-![Install time](results/install.png)
+<img alt="Install time" src="results/install.png" width="600"/>
 
 Although install time is not as important as load time it is probably at least
 worth doing the install in parallel. From these results its very clear which
@@ -44,14 +42,14 @@ plugin managers install in parallel vs sequential.
 
 ### Load time
 
-![Load time](results/load.png)
+<img alt="Load time" src="results/load.png" width="600"/>
 
 This is the metric we care about most because its about the time it takes to
 open a new shell until we get a usable prompt.
 
-**Note:** all plugins with zinit were run using `wait` which defers the plugin
-loading until after a prompt. Which means this time does not included the time
-taken to actually source the plugins, which is why it is so fast.
+**Note:** no deferred loading of plugins was done. For example: many plugin
+managers can be used in conjunction with [zsh-defer]. Or [zinit] could be run
+using `wait` which defers the plugin loading until after a prompt.
 
 ### Details
 
@@ -64,11 +62,11 @@ taken to actually source the plugins, which is why it is so fast.
 #### Versions
 - [antibody] v6.1.1
 - [antigen] v2.2.2
-- [sheldon] v0.6.1
+- [sheldon] v0.6.3
 - [zgen] master @ 0b669d2
-- [zinit] master @ 4457b998
+- [zinit] master @ 044ba6d4
 - [zplug] master @ c4dea76
-- [zpm] master @ 34bd973
+- [zpm] master @ 0daa697
 
 [antibody]: https://github.com/getantibody/antibody
 [antigen]: https://github.com/zsh-users/antigen
@@ -77,6 +75,7 @@ taken to actually source the plugins, which is why it is so fast.
 [zinit]: https://github.com/zdharma/zinit
 [zplug]: https://github.com/zplug/zplug
 [zpm]: https://github.com/zpm-zsh/zpm
+[zsh-defer]: https://github.com/romkatv/zsh-defer
 
 ## Usage
 

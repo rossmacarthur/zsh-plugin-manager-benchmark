@@ -32,10 +32,12 @@ def get_data():
 
 def chart(ty):
     df = get_data()
-    sns.set()
+    sns.set(rc={'figure.dpi': 200, 'savefig.dpi': 200})
     g = sns.barplot(data=df[df.type == ty], x='kind', y='times', palette='pastel')
     g.set(
-        title=f'{ty.title()} time', xlabel='', ylabel='Time taken (secs)',
+        title=f'{ty.title()} time',
+        xlabel='',
+        ylabel='Time taken (secs)',
     )
     filename = f'results/{ty}.png'
     g.figure.savefig(filename)
