@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+source "/root/.zi/bin/zi.zsh"
+zi light zsh-users/zsh-autosuggestions
+zi light wting/autojump
+zi light zsh-users/zsh-syntax-highlighting
+zi light StackExchange/blackbox
+zi light b4b4r07/enhancd
+zi light fcambus/ansiweather
+zi light zsh-users/zsh-history-substring-search
+zi light supercrabtree/k
+zi light chriskempson/base16-shell
+zi light wfxr/forgit
+zi light zdharma/fast-syntax-highlighting
+zi light larkery/zsh-histdb
+zi light MichaelAquilina/zsh-you-should-use
+zi light iam4x/zsh-iterm-touchbar
+zi light unixorn/git-extra-commands
+zi light marlonrichert/zsh-autocomplete
+zi light mfaerevaag/wd
+zi light agkozak/zsh-z
+zi light mafredri/zsh-async
+zi light Tarrasch/zsh-autoenv
+zi light zsh-users/zaw
+zi light djui/alias-tips
+zi light changyuheng/fz
+zi light b4b4r07/emoji-cli
+zi light Tarrasch/zsh-bd
+zi light zdharma/history-search-multi-word

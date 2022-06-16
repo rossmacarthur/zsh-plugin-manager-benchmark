@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Supported types of plugin managers. ('base' is an empty .zshrc)
-PLUGIN_MANAGERS="base antibody antigen sheldon zgen zinit zplug zpm"
+PLUGIN_MANAGERS="base antibody antigen sheldon zgen zi zinit zplug zpm"
 
 # Prints an error message and exits.
 err() {
@@ -53,6 +53,9 @@ _prepare_install() {
             ;;
         zgen )
             echo 'git -C /root/.zgen clean -dffx'
+            ;;
+        zi )
+            echo "for plugin in $(zi list | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' | sed 's/ \*//'); do zi unload $plugin -q; done"
             ;;
         zinit )
             echo "for plugin in $(zinit list | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' | sed 's/ \*//'); do zinit unload $plugin -q; done"
@@ -140,6 +143,15 @@ _update_plugins() {
         done
         echo '  zgen save' >> src/zgen/zshrc
         echo 'fi' >> src/zgen/zshrc
+    fi
+
+    # Zi
+    if [ -z "$kind" ] || [ "$kind" = "zi" ]; then
+        echo '#!/usr/bin/env zsh' > src/zi/zshrc
+        echo 'source "/root/.zi/bin/zi.zsh"' >> src/zi/zshrc
+        for plugin in $plugins; do
+            echo "zi light $plugin" >> src/zi/zshrc
+        done
     fi
 
     # Zinit
@@ -264,6 +276,12 @@ command_versions() {
     if [ -z "$kind" ] || [ "$kind" = "zgen" ]; then
         version=$(_docker_run base git -C /root/.zgen rev-parse --short HEAD)
         echo "zgen master @ $version"
+    fi
+
+    # Zi
+    if [ -z "$kind" ] || [ "$kind" = "zi" ]; then
+        version=$(_docker_run base git -C /root/.zi/bin rev-parse --short HEAD)
+        echo "zi master @ $version"
     fi
 
     # Zinit
