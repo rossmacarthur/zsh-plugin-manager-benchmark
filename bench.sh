@@ -55,7 +55,7 @@ _prepare_install() {
             echo 'git -C /root/.zgen clean -dffx'
             ;;
         zinit )
-            echo 'find /root/.zinit -mindepth 1 -maxdepth 1 ! -name "bin" -exec rm -rf {} \;'
+            echo "for plugin in $(zinit list | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' | sed 's/ \*//'); do zinit unload $plugin -q; done"
             ;;
         zplug )
             echo 'rm -rf /root/.zplug/repos'
@@ -146,9 +146,8 @@ _update_plugins() {
     if [ -z "$kind" ] || [ "$kind" = "zinit" ]; then
         echo '#!/usr/bin/env zsh' > src/zinit/zshrc
         echo 'source "/root/.zinit/bin/zinit.zsh"' >> src/zinit/zshrc
-        echo 'zinit for \' >> src/zinit/zshrc
         for plugin in $plugins; do
-            echo "  light-mode $plugin \\" >> src/zinit/zshrc
+            echo "zinit light $plugin" >> src/zinit/zshrc
         done
     fi
 
