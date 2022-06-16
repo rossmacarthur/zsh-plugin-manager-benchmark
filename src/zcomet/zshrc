@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+source "/root/.zcomet/zcomet.zsh"
+zcomet load zsh-users/zsh-autosuggestions
+zcomet load wting/autojump
+zcomet load zsh-users/zsh-syntax-highlighting
+zcomet load StackExchange/blackbox
+zcomet load b4b4r07/enhancd
+zcomet load fcambus/ansiweather
+zcomet load zsh-users/zsh-history-substring-search
+zcomet load supercrabtree/k
+zcomet load chriskempson/base16-shell
+zcomet load wfxr/forgit
+zcomet load zdharma/fast-syntax-highlighting
+zcomet load larkery/zsh-histdb
+zcomet load MichaelAquilina/zsh-you-should-use
+zcomet load iam4x/zsh-iterm-touchbar
+zcomet load unixorn/git-extra-commands
+zcomet load marlonrichert/zsh-autocomplete
+zcomet load mfaerevaag/wd
+zcomet load agkozak/zsh-z
+zcomet load mafredri/zsh-async
+zcomet load Tarrasch/zsh-autoenv
+zcomet load zsh-users/zaw
+zcomet load djui/alias-tips
+zcomet load changyuheng/fz
+zcomet load b4b4r07/emoji-cli
+zcomet load Tarrasch/zsh-bd
+zcomet load zdharma/history-search-multi-word
+zcomet compinit
