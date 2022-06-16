@@ -28,8 +28,8 @@ RUN curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh
 RUN git clone https://github.com/tarjoilija/zgen /root/.zgen
 
 # Zinit
-RUN mkdir -p /root/.zinit \
-    && git clone https://github.com/zdharma/zinit /root/.zinit/bin
+RUN mkdir -p /root/.zinit/bin \
+    && git clone https://github.com/zdharma-continuum/zinit.git /root/.zinit/bin
 
 # Zgenom
 RUN git clone https://github.com/jandamm/zgenom /root/.zgenom

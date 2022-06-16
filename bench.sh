@@ -161,9 +161,8 @@ _update_plugins() {
     if [ -z "$kind" ] || [ "$kind" = "zinit" ]; then
         echo '#!/usr/bin/env zsh' > src/zinit/zshrc
         echo 'source "/root/.zinit/bin/zinit.zsh"' >> src/zinit/zshrc
-        echo 'zinit for \' >> src/zinit/zshrc
         for plugin in $plugins; do
-            echo "  light-mode $plugin \\" >> src/zinit/zshrc
+            echo "zinit light $plugin" >> src/zinit/zshrc
         done
     fi
 
