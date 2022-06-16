@@ -1,29 +1,28 @@
 #!/usr/bin/env zsh
 source "/root/.zinit/bin/zinit.zsh"
-zinit for \
-  light-mode zsh-users/zsh-autosuggestions \
-  light-mode wting/autojump \
-  light-mode zsh-users/zsh-syntax-highlighting \
-  light-mode StackExchange/blackbox \
-  light-mode b4b4r07/enhancd \
-  light-mode fcambus/ansiweather \
-  light-mode zsh-users/zsh-history-substring-search \
-  light-mode supercrabtree/k \
-  light-mode chriskempson/base16-shell \
-  light-mode wfxr/forgit \
-  light-mode zdharma/fast-syntax-highlighting \
-  light-mode larkery/zsh-histdb \
-  light-mode MichaelAquilina/zsh-you-should-use \
-  light-mode iam4x/zsh-iterm-touchbar \
-  light-mode unixorn/git-extra-commands \
-  light-mode marlonrichert/zsh-autocomplete \
-  light-mode mfaerevaag/wd \
-  light-mode agkozak/zsh-z \
-  light-mode mafredri/zsh-async \
-  light-mode Tarrasch/zsh-autoenv \
-  light-mode zsh-users/zaw \
-  light-mode djui/alias-tips \
-  light-mode changyuheng/fz \
-  light-mode b4b4r07/emoji-cli \
-  light-mode Tarrasch/zsh-bd \
-  light-mode zdharma/history-search-multi-word \
+zinit light zsh-users/zsh-autosuggestions
+zinit light wting/autojump
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light StackExchange/blackbox
+zinit light b4b4r07/enhancd
+zinit light fcambus/ansiweather
+zinit light zsh-users/zsh-history-substring-search
+zinit light supercrabtree/k
+zinit light chriskempson/base16-shell
+zinit light wfxr/forgit
+zinit light zdharma/fast-syntax-highlighting
+zinit light larkery/zsh-histdb
+zinit light MichaelAquilina/zsh-you-should-use
+zinit light iam4x/zsh-iterm-touchbar
+zinit light unixorn/git-extra-commands
+zinit light marlonrichert/zsh-autocomplete
+zinit light mfaerevaag/wd
+zinit light agkozak/zsh-z
+zinit light mafredri/zsh-async
+zinit light Tarrasch/zsh-autoenv
+zinit light zsh-users/zaw
+zinit light djui/alias-tips
+zinit light changyuheng/fz
+zinit light b4b4r07/emoji-cli
+zinit light Tarrasch/zsh-bd
+zinit light zdharma/history-search-multi-word
