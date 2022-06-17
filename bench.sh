@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Supported types of plugin managers. ('base' is an empty .zshrc)
-PLUGIN_MANAGERS="base antibody antigen sheldon zgen zinit zplug zpm"
+PLUGIN_MANAGERS="base antibody antigen sheldon zgen zgenom zinit zplug zpm"
 
 # Prints an error message and exits.
 err() {
@@ -12,21 +12,21 @@ err() {
 # Prints out the command-line usage.
 usage() {
     cat 1>&2 <<EOF
-Benchmark different plugin managers.
+Benchmark different plugin managers
 
 USAGE:
     bench.sh [FLAGS] [OPTIONS]
 
 Options:
-  -h, --help       Show this message and exit.
-  -k, --kind KIND  The kind of plugin manager to benchmark.
+  -h, --help       Show this message and exit
+  -k, --kind KIND  The kind of plugin manager to benchmark
 
 Commands:
-  update-plugins  Update the plugin manager source from plugins.txt.
-  install         Benchmark the 'install' step.
-  load            Benchmark the 'load' step.
-  run             Open 'zsh' with a particular plugin manager.
-  versions        Output the versions of the plugin managers.
+  update-plugins  Update the plugin manager source from plugins.txt
+  install         Benchmark the 'install' step
+  load            Benchmark the 'load' step
+  run             Open 'zsh' with a particular plugin manager
+  versions        Output the versions of the plugin managers
 EOF
 }
 
@@ -53,6 +53,9 @@ _prepare_install() {
             ;;
         zgen )
             echo 'git -C /root/.zgen clean -dffx'
+            ;;
+        zgenom )
+            echo 'git -C /root/.zgen clean -dffx; git -C /root/.zgenom clean -dffx'
             ;;
         zinit )
             echo 'find /root/.zinit -mindepth 1 -maxdepth 1 ! -name "bin" -exec rm -rf {} \;'
@@ -140,6 +143,18 @@ _update_plugins() {
         done
         echo '  zgen save' >> src/zgen/zshrc
         echo 'fi' >> src/zgen/zshrc
+    fi
+
+    # Zgenom
+    if [ -z "$kind" ] || [ "$kind" = "zgenom" ]; then
+        echo '#!/usr/bin/env zsh' > src/zgenom/zshrc
+        echo 'source "/root/.zgenom/zgenom.zsh"' >> src/zgenom/zshrc
+        echo 'if ! zgenom saved; then' >> src/zgenom/zshrc
+        for plugin in $plugins; do
+            echo "  zgenom load $plugin" >> src/zgenom/zshrc
+        done
+        echo '  zgenom save' >> src/zgenom/zshrc
+        echo 'fi' >> src/zgenom/zshrc
     fi
 
     # Zinit
@@ -265,6 +280,12 @@ command_versions() {
     if [ -z "$kind" ] || [ "$kind" = "zgen" ]; then
         version=$(_docker_run base git -C /root/.zgen rev-parse --short HEAD)
         echo "zgen master @ $version"
+    fi
+
+    # Zgenom
+    if [ -z "$kind" ] || [ "$kind" = "zgenom" ]; then
+        version=$(_docker_run base git -C /root/.zgenom rev-parse --short HEAD)
+        echo "zgenom main @ $version"
     fi
 
     # Zinit

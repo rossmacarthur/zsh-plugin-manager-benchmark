@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+source "/root/.zgenom/zgenom.zsh"
+if ! zgenom saved; then
+  zgenom load zsh-users/zsh-autosuggestions
+  zgenom load wting/autojump
+  zgenom load zsh-users/zsh-syntax-highlighting
+  zgenom load StackExchange/blackbox
+  zgenom load b4b4r07/enhancd
+  zgenom load fcambus/ansiweather
+  zgenom load zsh-users/zsh-history-substring-search
+  zgenom load supercrabtree/k
+  zgenom load chriskempson/base16-shell
+  zgenom load wfxr/forgit
+  zgenom load zdharma/fast-syntax-highlighting
+  zgenom load larkery/zsh-histdb
+  zgenom load MichaelAquilina/zsh-you-should-use
+  zgenom load iam4x/zsh-iterm-touchbar
+  zgenom load unixorn/git-extra-commands
+  zgenom load marlonrichert/zsh-autocomplete
+  zgenom load mfaerevaag/wd
+  zgenom load agkozak/zsh-z
+  zgenom load mafredri/zsh-async
+  zgenom load Tarrasch/zsh-autoenv
+  zgenom load zsh-users/zaw
+  zgenom load djui/alias-tips
+  zgenom load changyuheng/fz
+  zgenom load b4b4r07/emoji-cli
+  zgenom load Tarrasch/zsh-bd
+  zgenom load zdharma/history-search-multi-word
+  zgenom save
+fi

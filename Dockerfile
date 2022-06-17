@@ -31,6 +31,9 @@ RUN git clone https://github.com/tarjoilija/zgen /root/.zgen
 RUN mkdir -p /root/.zinit \
     && git clone https://github.com/zdharma/zinit /root/.zinit/bin
 
+# Zgenom
+RUN git clone https://github.com/jandamm/zgenom /root/.zgenom
+
 # Zplug
 RUN git clone https://github.com/zplug/zplug /root/.zplug
 
