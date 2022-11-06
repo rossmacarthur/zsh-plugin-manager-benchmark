@@ -17,6 +17,9 @@ RUN curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh
 # Antibody
 RUN curl -fLsS git.io/antibody | sh -s - -b /usr/local/bin
 
+# Antidote
+RUN git clone --depth=1 https://github.com/mattmc3/antidote.git /root/.antidote
+
 # Antigen
 RUN curl -fLsS -o /root/antigen.zsh https://git.io/antigen
 

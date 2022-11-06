@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Supported types of plugin managers. ('base' is an empty .zshrc)
-PLUGIN_MANAGERS="base antibody antigen sheldon zgen zgenom zinit zplug zpm"
+PLUGIN_MANAGERS="base antibody antidote antigen sheldon zgen zgenom zinit zplug zpm"
 
 # Prints an error message and exits.
 err() {
@@ -45,17 +45,20 @@ _prepare_install() {
         antibody )
             echo 'rm -rf /root/.cache/antibody'
             ;;
+        antidote )
+            echo 'rm -rf /root/.cache/antidote /root/.zsh_plugins.zsh'
+            ;;
         antigen )
             echo 'rm -rf /root/.antigen'
             ;;
         sheldon )
-            echo 'find /root/.sheldon -mindepth 1 -maxdepth 1 ! -name "plugins.toml" -exec rm -rf {} \;'
+            echo 'rm -rf /root/.cache/sheldon'
             ;;
         zgen )
             echo 'git -C /root/.zgen clean -dffx'
             ;;
         zgenom )
-            echo 'git -C /root/.zgen clean -dffx; git -C /root/.zgenom clean -dffx'
+            echo 'git -C /root/.zgenom clean -dffx'
             ;;
         zinit )
             echo 'find /root/.zinit -mindepth 1 -maxdepth 1 ! -name "bin" -exec rm -rf {} \;'
@@ -81,6 +84,9 @@ _docker_args() {
     case $1 in
         antibody )
             echo "-v $PWD/src/antibody/plugins.txt:/root/.antibody/plugins.txt"
+            ;;
+        antidote )
+            echo "-v $PWD/src/antidote/zsh_plugins.txt:/root/.zsh_plugins.txt"
             ;;
         sheldon )
             echo "-v $PWD/src/sheldon/plugins.toml:/root/.sheldon/plugins.toml"
@@ -113,6 +119,18 @@ _update_plugins() {
     # Antibody
     if [ -z "$kind" ] || [ "$kind" = "antibody" ]; then
         cp src/plugins.txt src/antibody/plugins.txt
+    fi
+
+    # Antidote
+    if [ -z "$kind" ] || [ "$kind" = "antidote" ]; then
+        echo "" > src/antidote/zsh_plugins.txt
+        for plugin in $plugins; do
+            if [ "$plugin" = "wting/autojump" ]; then
+                echo "$plugin path:bin" >> src/antidote/zsh_plugins.txt
+            else
+                echo "$plugin" >> src/antidote/zsh_plugins.txt
+            fi
+        done
     fi
 
     # Antigen
@@ -261,6 +279,12 @@ command_versions() {
     if [ -z "$kind" ] || [ "$kind" = "antibody" ]; then
         version=$(_docker_run base antibody --version 2>&1 | awk '{print $3}')
         echo "antibody v$version"
+    fi
+
+    # Antidote
+    if [ -z "$kind" ] || [ "$kind" = "antidote" ]; then
+        version=$(_docker_run base antidote --version 2>&1 | awk '{print $3}')
+        echo "antidote v$version"
     fi
 
     # Antigen

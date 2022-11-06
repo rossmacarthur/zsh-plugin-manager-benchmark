@@ -1,0 +1,2 @@
+source /root/.antidote/antidote.zsh
+antidote load
