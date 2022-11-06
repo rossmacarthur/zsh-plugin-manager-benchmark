@@ -52,7 +52,7 @@ _prepare_install() {
             echo 'rm -rf /root/.antigen'
             ;;
         sheldon )
-            echo 'rm -rf /root/.cache/sheldon'
+            echo 'rm -rf /root/.local/share/sheldon'
             ;;
         zgen )
             echo 'git -C /root/.zgen clean -dffx'
@@ -89,7 +89,7 @@ _docker_args() {
             echo "-v $PWD/src/antidote/zsh_plugins.txt:/root/.zsh_plugins.txt"
             ;;
         sheldon )
-            echo "-v $PWD/src/sheldon/plugins.toml:/root/.sheldon/plugins.toml"
+            echo "-v $PWD/src/sheldon/plugins.toml:/root/.config/sheldon/plugins.toml"
             ;;
         * )
             ;;
