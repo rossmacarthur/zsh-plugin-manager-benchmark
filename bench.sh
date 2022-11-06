@@ -58,7 +58,7 @@ _prepare_install() {
             echo 'git -C /root/.zgen clean -dffx'
             ;;
         zgenom )
-            echo 'git -C /root/.zgenom clean -dffx'
+            echo 'git -C /root/.zgenom clean -dffx; git -C /root/.zgen clean -dffx'
             ;;
         zinit )
             echo 'find /root/.zinit -mindepth 1 -maxdepth 1 ! -name "bin" -exec rm -rf {} \;'
