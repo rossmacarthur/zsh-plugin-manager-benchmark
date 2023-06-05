@@ -1,3 +1,4 @@
+
 zsh-users/zsh-autosuggestions
 wting/autojump
 zsh-users/zsh-syntax-highlighting

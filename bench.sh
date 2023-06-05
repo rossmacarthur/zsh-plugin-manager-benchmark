@@ -114,17 +114,22 @@ _docker_run() {
 _update_plugins() {
     local kind=$1
 
-    plugins=$(cat src/plugins.txt)
+    plugins=$(IFS=$'\n' cat src/plugins.txt)
 
     # Antibody
     if [ -z "$kind" ] || [ "$kind" = "antibody" ]; then
-        cp src/plugins.txt src/antibody/plugins.txt
+        echo "" > src/antibody/plugins.txt
+        for line in $plugins; do
+            IFS="@" read -r plugin branch <<< "$line"
+            echo "$plugin" >> src/antibody/plugins.txt
+        done
     fi
 
     # Antidote
     if [ -z "$kind" ] || [ "$kind" = "antidote" ]; then
         echo "" > src/antidote/zsh_plugins.txt
-        for plugin in $plugins; do
+        for line in $plugins; do
+            IFS="@" read -r plugin branch <<< "$line"
             if [ "$plugin" = "wting/autojump" ]; then
                 echo "$plugin path:bin" >> src/antidote/zsh_plugins.txt
             else
@@ -136,9 +141,10 @@ _update_plugins() {
     # Antigen
     if [ -z "$kind" ] || [ "$kind" = "antigen" ]; then
         echo '#!/usr/bin/env zsh' > src/antigen/zshrc
+        echo 'ANTIGEN_LOG=/root/antigen.log' > src/antigen/zshrc
         echo 'source /root/antigen.zsh' >> src/antigen/zshrc
-        for plugin in $plugins; do
-            echo "antigen bundle \"$plugin\"" >> src/antigen/zshrc
+        for line in $plugins; do
+            echo "antigen bundle \"$line\"" >> src/antigen/zshrc
         done
         echo "antigen apply" >> src/antigen/zshrc
     fi
@@ -146,7 +152,8 @@ _update_plugins() {
     # Sheldon
     if [ -z "$kind" ] || [ "$kind" = "sheldon" ]; then
         echo "" > src/sheldon/plugins.toml
-        for plugin in $plugins; do
+        for line in $plugins; do
+            IFS="@" read -r plugin branch <<< "$line"
             echo "plugins.'$plugin'.github = '$plugin'" >> src/sheldon/plugins.toml
         done
     fi
@@ -156,8 +163,10 @@ _update_plugins() {
         echo '#!/usr/bin/env zsh' > src/zgen/zshrc
         echo 'source "/root/.zgen/zgen.zsh"' >> src/zgen/zshrc
         echo 'if ! zgen saved; then' >> src/zgen/zshrc
-        for plugin in $plugins; do
-            echo "  zgen load $plugin" >> src/zgen/zshrc
+        for line in $plugins; do
+            IFS="@" read -r plugin branch <<< "$line"
+            branch=${branch:-master}
+            echo "  zgen load $plugin \"\" $branch" >> src/zgen/zshrc
         done
         echo '  zgen save' >> src/zgen/zshrc
         echo 'fi' >> src/zgen/zshrc
@@ -168,7 +177,8 @@ _update_plugins() {
         echo '#!/usr/bin/env zsh' > src/zgenom/zshrc
         echo 'source "/root/.zgenom/zgenom.zsh"' >> src/zgenom/zshrc
         echo 'if ! zgenom saved; then' >> src/zgenom/zshrc
-        for plugin in $plugins; do
+        for line in $plugins; do
+            IFS="@" read -r plugin branch <<< "$line"
             echo "  zgenom load $plugin" >> src/zgenom/zshrc
         done
         echo '  zgenom save' >> src/zgenom/zshrc
@@ -179,7 +189,8 @@ _update_plugins() {
     if [ -z "$kind" ] || [ "$kind" = "zinit" ]; then
         echo '#!/usr/bin/env zsh' > src/zinit/zshrc
         echo 'source "/root/.zinit/bin/zinit.zsh"' >> src/zinit/zshrc
-        for plugin in $plugins; do
+        for line in $plugins; do
+            IFS="@" read -r plugin branch <<< "$line"
             echo "zinit light $plugin" >> src/zinit/zshrc
         done
     fi
@@ -189,7 +200,8 @@ _update_plugins() {
         echo '#!/usr/bin/env zsh' > src/zplug/zshrc
         echo 'export ZPLUG_HOME=/root/.zplug' >> src/zplug/zshrc
         echo 'source "$ZPLUG_HOME/init.zsh"' >> src/zplug/zshrc
-        for plugin in $plugins; do
+        for line in $plugins; do
+            IFS="@" read -r plugin branch <<< "$line"
             echo "zplug \"$plugin\"" >> src/zplug/zshrc
         done
         echo '! zplug check && zplug install' >> src/zplug/zshrc
@@ -201,7 +213,8 @@ _update_plugins() {
         echo '#!/usr/bin/env zsh' > src/zpm/zshrc
         echo 'source "/root/.zpm/zpm.zsh"' >> src/zpm/zshrc
         echo 'zpm load \' >> src/zpm/zshrc
-        for plugin in $plugins; do
+        for line in $plugins; do
+            IFS="@" read -r plugin branch <<< "$line"
             echo "  ${plugin},async \\" >> src/zpm/zshrc
         done
     fi
