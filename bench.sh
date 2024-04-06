@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Supported types of plugin managers. ('base' is an empty .zshrc)
-PLUGIN_MANAGERS="base antibody antidote antigen sheldon zgen zgenom zinit zplug zpm"
+PLUGIN_MANAGERS="base antibody antidote antigen sheldon zgen zgenom zinit zplug zpm zsh4humans"
 
 # Prints an error message and exits.
 err() {
@@ -69,8 +69,20 @@ _prepare_install() {
         zpm )
             echo 'rm -rf "${TMPDIR:-/tmp}/zsh-${UID:-user}"; rm -rf /root/.zpm/plugins; find /root/.zpm -name "*.zwc" -exec rm -f {} \;'
             ;;
+        zsh4humans )
+            echo 'rm -rf /root/.cache/zsh4humans; cp /root/.zsh4humans/.zshenv /root/; ZDOTDIR=/root NO_INSTALL=1 zsh -is </dev/null'
+            ;;
         * )
             return 1
+    esac
+}
+
+# Outputs the command to use to prepare the environment for loading.
+_prepare_load() {
+    case $1 in
+        zsh4humans )
+            echo 'cp /root/.zsh4humans/.zshenv /root/'
+            ;;
     esac
 }
 
@@ -218,6 +230,25 @@ _update_plugins() {
             echo "  ${plugin},async \\" >> src/zpm/zshrc
         done
     fi
+
+    # zsh4humans
+    if [ -z "$kind" ] || [ "$kind" = "zsh4humans" ]; then
+        echo '#!/usr/bin/env zsh' > src/zsh4humans/zshrc
+        echo 'zstyle ":z4h:*" channel none' >> src/zsh4humans/zshrc
+        echo 'if (( ! NO_INSTALL )); then' >> src/zsh4humans/zshrc
+        echo 'z4h install \' >> src/zsh4humans/zshrc
+        for line in $plugins; do
+            IFS="@" read -r plugin branch <<< "$line"
+            echo "  ${plugin} \\" >> src/zsh4humans/zshrc
+        done
+        echo '' >> src/zsh4humans/zshrc
+        echo 'fi' >> src/zsh4humans/zshrc
+        echo 'z4h init' >> src/zsh4humans/zshrc
+        for line in $plugins; do
+            IFS="@" read -r plugin branch <<< "$line"
+            echo "z4h load -c ${plugin}" >> src/zsh4humans/zshrc
+        done
+    fi
 }
 
 # Runs the 'update-plugins' command.
@@ -259,8 +290,11 @@ command_load() {
     for k in $PLUGIN_MANAGERS; do
         if [ -z "$kind" ] || [ "$k" = "$kind" ]; then
             echo -e "\033[1;32mBenchmarking $k\033[0m "
+            prepare=$(_prepare_load "$k")
+            test $? -ne 0 && err "Error: failed to get prepare command for %s\n" "$k"
             _docker_run "$k" \
                 hyperfine \
+                --prepare "$prepare" \
                 --warmup 3 \
                 --export-json "/target/load-$k.json" \
                 'zsh -ic exit'
@@ -340,6 +374,12 @@ command_versions() {
     if [ -z "$kind" ] || [ "$kind" = "zpm" ]; then
         version=$(_docker_run base git -C /root/.zpm rev-parse --short HEAD)
         echo "zpm master @ $version"
+    fi
+
+    # zsh4humans
+    if [ -z "$kind" ] || [ "$kind" = "zsh4humans" ]; then
+        version=$(_docker_run base git -C /root/.zsh4humans rev-parse --short HEAD)
+        echo "zsh4humans v5 @ $version"
     fi
 }
 

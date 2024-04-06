@@ -1,0 +1,59 @@
+#!/usr/bin/env zsh
+zstyle ":z4h:*" channel none
+if (( ! NO_INSTALL )); then
+z4h install \
+  zsh-users/zsh-autosuggestions \
+  wting/autojump \
+  zsh-users/zsh-syntax-highlighting \
+  StackExchange/blackbox \
+  b4b4r07/enhancd \
+  fcambus/ansiweather \
+  zsh-users/zsh-history-substring-search \
+  supercrabtree/k \
+  chriskempson/base16-shell \
+  wfxr/forgit \
+  zdharma/fast-syntax-highlighting \
+  larkery/zsh-histdb \
+  MichaelAquilina/zsh-you-should-use \
+  iam4x/zsh-iterm-touchbar \
+  unixorn/git-extra-commands \
+  marlonrichert/zsh-autocomplete \
+  mfaerevaag/wd \
+  agkozak/zsh-z \
+  mafredri/zsh-async \
+  Tarrasch/zsh-autoenv \
+  zsh-users/zaw \
+  djui/alias-tips \
+  changyuheng/fz \
+  b4b4r07/emoji-cli \
+  Tarrasch/zsh-bd \
+  zdharma/history-search-multi-word \
+
+fi
+z4h init
+z4h load -c zsh-users/zsh-autosuggestions
+z4h load -c wting/autojump
+z4h load -c zsh-users/zsh-syntax-highlighting
+z4h load -c StackExchange/blackbox
+z4h load -c b4b4r07/enhancd
+z4h load -c fcambus/ansiweather
+z4h load -c zsh-users/zsh-history-substring-search
+z4h load -c supercrabtree/k
+z4h load -c chriskempson/base16-shell
+z4h load -c wfxr/forgit
+z4h load -c zdharma/fast-syntax-highlighting
+z4h load -c larkery/zsh-histdb
+z4h load -c MichaelAquilina/zsh-you-should-use
+z4h load -c iam4x/zsh-iterm-touchbar
+z4h load -c unixorn/git-extra-commands
+z4h load -c marlonrichert/zsh-autocomplete
+z4h load -c mfaerevaag/wd
+z4h load -c agkozak/zsh-z
+z4h load -c mafredri/zsh-async
+z4h load -c Tarrasch/zsh-autoenv
+z4h load -c zsh-users/zaw
+z4h load -c djui/alias-tips
+z4h load -c changyuheng/fz
+z4h load -c b4b4r07/emoji-cli
+z4h load -c Tarrasch/zsh-bd
+z4h load -c zdharma/history-search-multi-word

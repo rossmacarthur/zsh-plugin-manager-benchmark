@@ -42,3 +42,7 @@ RUN git clone https://github.com/zplug/zplug /root/.zplug
 
 # Zpm
 RUN git clone --depth 1 https://github.com/zpm-zsh/zpm /root/.zpm
+
+# zsh4humans
+RUN git clone --branch v5 --depth 1 https://github.com/romkatv/zsh4humans \
+    /root/.zsh4humans
