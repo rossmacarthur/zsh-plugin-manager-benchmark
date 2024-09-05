@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+source /root/.znap/znap.zsh
+mkdir -p /root/.znap/repos; zstyle ':znap:*' repos-dir /root/.znap/repos
+znap source zsh-users/zsh-autosuggestions
+znap source wting/autojump
+znap source zsh-users/zsh-syntax-highlighting
+znap source StackExchange/blackbox
+znap source b4b4r07/enhancd
+znap source fcambus/ansiweather
+znap source zsh-users/zsh-history-substring-search
+znap source supercrabtree/k
+znap source chriskempson/base16-shell
+znap source wfxr/forgit
+znap source zdharma/fast-syntax-highlighting
+znap source larkery/zsh-histdb
+znap source MichaelAquilina/zsh-you-should-use
+znap source iam4x/zsh-iterm-touchbar
+znap source unixorn/git-extra-commands
+znap source marlonrichert/zsh-autocomplete
+znap source mfaerevaag/wd
+znap source agkozak/zsh-z
+znap source mafredri/zsh-async
+znap source Tarrasch/zsh-autoenv
+znap source zsh-users/zaw
+znap source djui/alias-tips
+znap source changyuheng/fz
+znap source b4b4r07/emoji-cli
+znap source Tarrasch/zsh-bd
+znap source zdharma/history-search-multi-word

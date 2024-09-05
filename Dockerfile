@@ -42,3 +42,6 @@ RUN git clone https://github.com/zplug/zplug /root/.zplug
 
 # Zpm
 RUN git clone --depth 1 https://github.com/zpm-zsh/zpm /root/.zpm
+
+# znap
+RUN git clone --depth 1 https://github.com/marlonrichert/zsh-snap.git /root/.znap
