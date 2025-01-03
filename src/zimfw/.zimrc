@@ -1,0 +1,26 @@
+
+zmodule zsh-users/zsh-autosuggestions
+zmodule wting/autojump
+zmodule zsh-users/zsh-syntax-highlighting
+zmodule StackExchange/blackbox
+zmodule b4b4r07/enhancd
+zmodule fcambus/ansiweather
+zmodule zsh-users/zsh-history-substring-search
+zmodule supercrabtree/k
+zmodule chriskempson/base16-shell
+zmodule wfxr/forgit
+zmodule zdharma/fast-syntax-highlighting
+zmodule larkery/zsh-histdb
+zmodule MichaelAquilina/zsh-you-should-use
+zmodule iam4x/zsh-iterm-touchbar
+zmodule unixorn/git-extra-commands
+zmodule marlonrichert/zsh-autocomplete
+zmodule mfaerevaag/wd
+zmodule agkozak/zsh-z
+zmodule mafredri/zsh-async
+zmodule Tarrasch/zsh-autoenv
+zmodule zsh-users/zaw
+zmodule djui/alias-tips
+zmodule changyuheng/fz
+zmodule Tarrasch/zsh-bd
+zmodule zdharma/history-search-multi-word

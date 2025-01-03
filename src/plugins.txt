@@ -21,6 +21,5 @@ Tarrasch/zsh-autoenv
 zsh-users/zaw
 djui/alias-tips
 changyuheng/fz
-b4b4r07/emoji-cli
 Tarrasch/zsh-bd
 zdharma/history-search-multi-word@main

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Supported types of plugin managers. ('base' is an empty .zshrc)
-PLUGIN_MANAGERS="base antibody antidote antigen sheldon zgen zgenom zinit zplug zpm"
+PLUGIN_MANAGERS="base antibody antidote antigen sheldon zgen zgenom zimfw zinit zplug zpm"
 
 # Prints an error message and exits.
 err() {
@@ -58,16 +58,19 @@ _prepare_install() {
             echo 'git -C /root/.zgen clean -dffx'
             ;;
         zgenom )
-            echo 'git -C /root/.zgenom clean -dffx; git -C /root/.zgen clean -dffx'
+            echo 'git -C /root/.zgenom clean -dffx'
+            ;;
+        zimfw )
+            echo 'git -C /root/.zim clean -dffx'
             ;;
         zinit )
-            echo 'find /root/.zinit -mindepth 1 -maxdepth 1 ! -name "bin" -exec rm -rf {} \;'
+            echo 'git -C /root/.zinit clean -dffx'
             ;;
         zplug )
-            echo 'rm -rf /root/.zplug/repos'
+            echo 'git -C /root/.zplug clean -dffx'
             ;;
         zpm )
-            echo 'rm -rf "${TMPDIR:-/tmp}/zsh-${UID:-user}"; rm -rf /root/.zpm/plugins; find /root/.zpm -name "*.zwc" -exec rm -f {} \;'
+            echo 'git -C /root/.zpm clean -dffx; rm -rf "${TMPDIR:-/tmp}/zsh-${UID:-user}";'
             ;;
         * )
             return 1
@@ -90,6 +93,9 @@ _docker_args() {
             ;;
         sheldon )
             echo "-v $PWD/src/sheldon/plugins.toml:/root/.config/sheldon/plugins.toml"
+            ;;
+        zimfw )
+            echo "-v $PWD/src/zimfw/.zimrc:/root/.zimrc"
             ;;
         * )
             ;;
@@ -152,6 +158,7 @@ _update_plugins() {
     # Sheldon
     if [ -z "$kind" ] || [ "$kind" = "sheldon" ]; then
         echo "" > src/sheldon/plugins.toml
+        echo "shell = 'zsh'" >> src/sheldon/plugins.toml
         for line in $plugins; do
             IFS="@" read -r plugin branch <<< "$line"
             echo "plugins.'$plugin'.github = '$plugin'" >> src/sheldon/plugins.toml
@@ -175,7 +182,8 @@ _update_plugins() {
     # Zgenom
     if [ -z "$kind" ] || [ "$kind" = "zgenom" ]; then
         echo '#!/usr/bin/env zsh' > src/zgenom/zshrc
-        echo 'source "/root/.zgenom/zgenom.zsh"' >> src/zgenom/zshrc
+        echo 'export ZGEN_DIR=/root/.zgenom' >> src/zgenom/zshrc
+        echo 'source "$ZGEN_DIR/zgenom.zsh"' >> src/zgenom/zshrc
         echo 'if ! zgenom saved; then' >> src/zgenom/zshrc
         for line in $plugins; do
             IFS="@" read -r plugin branch <<< "$line"
@@ -185,10 +193,19 @@ _update_plugins() {
         echo 'fi' >> src/zgenom/zshrc
     fi
 
+    # Zimfw
+    if [ -z "$kind" ] || [ "$kind" = "zimfw" ]; then
+        echo "" > src/zimfw/.zimrc
+        for line in $plugins; do
+            IFS="@" read -r plugin branch <<< "$line"
+            echo "zmodule $plugin" >> src/zimfw/.zimrc
+        done
+    fi
+
     # Zinit
     if [ -z "$kind" ] || [ "$kind" = "zinit" ]; then
         echo '#!/usr/bin/env zsh' > src/zinit/zshrc
-        echo 'source "/root/.zinit/bin/zinit.zsh"' >> src/zinit/zshrc
+        echo 'source "/root/.zinit/zinit.zsh"' >> src/zinit/zshrc
         for line in $plugins; do
             IFS="@" read -r plugin branch <<< "$line"
             echo "zinit light $plugin" >> src/zinit/zshrc
@@ -326,8 +343,14 @@ command_versions() {
 
     # Zinit
     if [ -z "$kind" ] || [ "$kind" = "zinit" ]; then
-        version=$(_docker_run base git -C /root/.zinit/bin rev-parse --short HEAD)
+        version=$(_docker_run base git -C /root/.zinit rev-parse --short HEAD)
         echo "zinit master @ $version"
+    fi
+
+    # Zimfw
+    if [ -z "$kind" ] || [ "$kind" = "zimfw" ]; then
+        version=$(_docker_run base git -C /root/.zim rev-parse --short HEAD)
+        echo "zim master @ $version"
     fi
 
     # Zplug
