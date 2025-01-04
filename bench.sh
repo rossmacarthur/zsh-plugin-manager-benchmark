@@ -61,7 +61,7 @@ _prepare_install() {
             echo 'git -C /root/.zgenom clean -dffx'
             ;;
         zimfw )
-            echo 'git -C /root/.zim clean -dffx'
+            echo 'find /root/.zim -mindepth 1 -maxdepth 1 ! -name "zimfw.zsh" -exec rm -rf {} +'
             ;;
         zinit )
             echo 'git -C /root/.zinit clean -dffx'
@@ -349,8 +349,8 @@ command_versions() {
 
     # Zimfw
     if [ -z "$kind" ] || [ "$kind" = "zimfw" ]; then
-        version=$(_docker_run base git -C /root/.zim rev-parse --short HEAD)
-        echo "zim master @ $version"
+        version=$(_docker_run base zsh -c 'export ZIM_HOME=/root/.zim; source $ZIM_HOME/zimfw.zsh version;')
+        echo "zimfw v$version"
     fi
 
     # Zplug

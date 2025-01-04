@@ -34,7 +34,8 @@ RUN git clone --depth 1 https://github.com/tarjoilija/zgen /root/.zgen
 RUN git clone --depth 1 https://github.com/zdharma-continuum/zinit.git /root/.zinit
 
 # Zimfw
-RUN git clone --depth 1 https://github.com/zimfw/zimfw /root/.zim
+RUN curl -fsSL --create-dirs -o /root/.zim/zimfw.zsh \
+    https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
 
 # Zgenom
 RUN git clone --depth 1 https://github.com/jandamm/zgenom /root/.zgenom
