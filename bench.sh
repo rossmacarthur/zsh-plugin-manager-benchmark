@@ -84,18 +84,19 @@ _docker_build() {
 
 # Outputs extra arguments for the Docker run command for the given plugin manager.
 _docker_args() {
-    case $1 in
+    local kind=$1
+    case $kind in
         antibody )
-            echo "-v $PWD/src/antibody/plugins.txt:/root/.antibody/plugins.txt"
+            echo "-v $PWD/src/$kind/plugins.txt:/root/.antibody/plugins.txt"
             ;;
         antidote )
-            echo "-v $PWD/src/antidote/zsh_plugins.txt:/root/.zsh_plugins.txt"
+            echo "-v $PWD/src/$kind/zsh_plugins.txt:/root/.zsh_plugins.txt"
             ;;
         sheldon )
-            echo "-v $PWD/src/sheldon/plugins.toml:/root/.config/sheldon/plugins.toml"
+            echo "-v $PWD/src/$kind/plugins.toml:/root/.config/sheldon/plugins.toml"
             ;;
         zimfw )
-            echo "-v $PWD/src/zimfw/.zimrc:/root/.zimrc"
+            echo "-v $PWD/src/$kind/.zimrc:/root/.zimrc"
             ;;
         * )
             ;;
