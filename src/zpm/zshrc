@@ -2,7 +2,6 @@
 source "/root/.zpm/zpm.zsh"
 zpm load \
   zsh-users/zsh-autosuggestions,async \
-  wting/autojump,async \
   zsh-users/zsh-syntax-highlighting,async \
   StackExchange/blackbox,async \
   b4b4r07/enhancd,async \
@@ -10,7 +9,6 @@ zpm load \
   zsh-users/zsh-history-substring-search,async \
   supercrabtree/k,async \
   chriskempson/base16-shell,async \
-  wfxr/forgit,async \
   zdharma/fast-syntax-highlighting,async \
   larkery/zsh-histdb,async \
   MichaelAquilina/zsh-you-should-use,async \
@@ -24,6 +22,5 @@ zpm load \
   zsh-users/zaw,async \
   djui/alias-tips,async \
   changyuheng/fz,async \
-  b4b4r07/emoji-cli,async \
   Tarrasch/zsh-bd,async \
   zdharma/history-search-multi-word,async \

@@ -6,7 +6,6 @@ fcambus/ansiweather
 zsh-users/zsh-history-substring-search
 supercrabtree/k
 chriskempson/base16-shell
-wfxr/forgit
 zdharma/fast-syntax-highlighting@main
 larkery/zsh-histdb
 MichaelAquilina/zsh-you-should-use
