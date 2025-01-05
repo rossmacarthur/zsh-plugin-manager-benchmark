@@ -1,5 +1,4 @@
 zsh-users/zsh-autosuggestions
-wting/autojump
 zsh-users/zsh-syntax-highlighting
 StackExchange/blackbox
 b4b4r07/enhancd

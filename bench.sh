@@ -64,7 +64,7 @@ _prepare_install() {
             echo 'find /root/.zim -mindepth 1 -maxdepth 1 ! -name "zimfw.zsh" -exec rm -rf {} +'
             ;;
         zinit )
-            echo 'git -C /root/.zinit clean -dffx'
+            echo 'find /root/.zinit -mindepth 1 -maxdepth 1 ! -name "bin" -exec rm -rf {} +'
             ;;
         zplug )
             echo 'git -C /root/.zplug clean -dffx'
@@ -205,7 +205,7 @@ _update_plugins() {
     # Zinit
     if [ -z "$kind" ] || [ "$kind" = "zinit" ]; then
         echo '#!/usr/bin/env zsh' > src/zinit/zshrc
-        echo 'source "/root/.zinit/zinit.zsh"' >> src/zinit/zshrc
+        echo 'source "/root/.zinit/bin/zinit.zsh"' >> src/zinit/zshrc
         for line in $plugins; do
             IFS="@" read -r plugin branch <<< "$line"
             echo "zinit light $plugin" >> src/zinit/zshrc
@@ -343,7 +343,7 @@ command_versions() {
 
     # Zinit
     if [ -z "$kind" ] || [ "$kind" = "zinit" ]; then
-        version=$(_docker_run base git -C /root/.zinit rev-parse --short HEAD)
+        version=$(_docker_run base git -C /root/.zinit/bin rev-parse --short HEAD)
         echo "zinit master @ $version"
     fi
 
