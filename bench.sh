@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Supported types of plugin managers. ('base' is an empty .zshrc)
-PLUGIN_MANAGERS="base antibody antidote antigen sheldon zgen zgenom zimfw zinit zplug zpm"
+PLUGIN_MANAGERS="base antibody antidote antigen sheldon zimfw zpm zplug zgen zgenom zinit"
 
 # Prints an error message and exits.
 err() {
@@ -70,7 +70,7 @@ _prepare_install() {
             echo 'git -C /root/.zplug clean -dffx'
             ;;
         zpm )
-            echo 'rm -rf "${TMPDIR:-/tmp}/zsh-${UID:-user}"'
+            echo 'rm -rf /root/.zpm/plugins; rm -rf "${TMPDIR:-/tmp}/zsh-${UID:-user};"'
             ;;
         * )
             return 1
