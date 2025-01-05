@@ -70,7 +70,7 @@ _prepare_install() {
             echo 'git -C /root/.zplug clean -dffx'
             ;;
         zpm )
-            echo 'git -C /root/.zpm clean -dffx; rm -rf "${TMPDIR:-/tmp}/zsh-${UID:-user}";'
+            echo 'rm -rf "${TMPDIR:-/tmp}/zsh-${UID:-user}"'
             ;;
         * )
             return 1
