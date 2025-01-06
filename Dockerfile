@@ -28,17 +28,22 @@ RUN curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh
     | bash -s -- --repo "rossmacarthur/sheldon" --to /usr/local/bin
 
 # Zgen
-RUN git clone https://github.com/tarjoilija/zgen /root/.zgen
+RUN git clone --depth 1 https://github.com/tarjoilija/zgen /root/.zgen
 
 # Zinit
-RUN mkdir -p /root/.zinit/bin \
-    && git clone https://github.com/zdharma-continuum/zinit.git /root/.zinit/bin
+RUN git clone --depth 1 https://github.com/zdharma-continuum/zinit.git /root/.zinit/bin
+
+# Zimfw
+RUN curl -fsSL --create-dirs -o /root/.zim/zimfw.zsh \
+    https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
 
 # Zgenom
-RUN git clone https://github.com/jandamm/zgenom /root/.zgenom
+RUN git clone --depth 1 https://github.com/jandamm/zgenom /root/.zgenom
 
 # Zplug
-RUN git clone https://github.com/zplug/zplug /root/.zplug
+RUN git clone --depth 1 https://github.com/zplug/zplug /root/.zplug
 
 # Zpm
 RUN git clone --depth 1 https://github.com/zpm-zsh/zpm /root/.zpm
+
+RUN echo 'unset global_rcs' >> /etc/zshenv

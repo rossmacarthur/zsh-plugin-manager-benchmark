@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+zstyle ':zim:zmodule' use 'degit'
+
+ZIM_HOME=${HOME}/.zim
+ZIM_CONFIG_FILE=${HOME}/.zimrc
+# Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZIM_CONFIG_FILE} ]]; then
+  source ${ZIM_HOME}/zimfw.zsh init -q
+fi
+# Initialize modules.
+source ${ZIM_HOME}/init.zsh

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Supported types of plugin managers. ('base' is an empty .zshrc)
-PLUGIN_MANAGERS="base antibody antidote antigen sheldon zgen zgenom zinit zplug zpm"
+PLUGIN_MANAGERS="base antibody antidote antigen sheldon zgen zgenom zimfw zinit zplug zpm"
 
 # Prints an error message and exits.
 err() {
@@ -58,16 +58,19 @@ _prepare_install() {
             echo 'git -C /root/.zgen clean -dffx'
             ;;
         zgenom )
-            echo 'git -C /root/.zgenom clean -dffx; git -C /root/.zgen clean -dffx'
+            echo 'git -C /root/.zgenom clean -dffx'
+            ;;
+        zimfw )
+            echo 'find /root/.zim -mindepth 1 -maxdepth 1 ! -name "zimfw.zsh" -exec rm -rf {} +'
             ;;
         zinit )
-            echo 'find /root/.zinit -mindepth 1 -maxdepth 1 ! -name "bin" -exec rm -rf {} \;'
+            echo 'find /root/.zinit -mindepth 1 -maxdepth 1 ! -name "bin" -exec rm -rf {} +'
             ;;
         zplug )
-            echo 'rm -rf /root/.zplug/repos'
+            echo 'git -C /root/.zplug clean -dffx'
             ;;
         zpm )
-            echo 'rm -rf "${TMPDIR:-/tmp}/zsh-${UID:-user}"; rm -rf /root/.zpm/plugins; find /root/.zpm -name "*.zwc" -exec rm -f {} \;'
+            echo 'rm -rf /root/.zpm/plugins; rm -rf "${TMPDIR:-/tmp}/zsh-${UID:-user};"'
             ;;
         * )
             return 1
@@ -81,15 +84,19 @@ _docker_build() {
 
 # Outputs extra arguments for the Docker run command for the given plugin manager.
 _docker_args() {
-    case $1 in
+    local kind=$1
+    case $kind in
         antibody )
-            echo "-v $PWD/src/antibody/plugins.txt:/root/.antibody/plugins.txt"
+            echo "-v $PWD/src/$kind/plugins.txt:/root/.antibody/plugins.txt"
             ;;
         antidote )
-            echo "-v $PWD/src/antidote/zsh_plugins.txt:/root/.zsh_plugins.txt"
+            echo "-v $PWD/src/$kind/zsh_plugins.txt:/root/.zsh_plugins.txt"
             ;;
         sheldon )
-            echo "-v $PWD/src/sheldon/plugins.toml:/root/.config/sheldon/plugins.toml"
+            echo "-v $PWD/src/$kind/plugins.toml:/root/.config/sheldon/plugins.toml"
+            ;;
+        zimfw )
+            echo "-v $PWD/src/$kind/.zimrc:/root/.zimrc"
             ;;
         * )
             ;;
@@ -152,6 +159,7 @@ _update_plugins() {
     # Sheldon
     if [ -z "$kind" ] || [ "$kind" = "sheldon" ]; then
         echo "" > src/sheldon/plugins.toml
+        echo "shell = 'zsh'" >> src/sheldon/plugins.toml
         for line in $plugins; do
             IFS="@" read -r plugin branch <<< "$line"
             echo "plugins.'$plugin'.github = '$plugin'" >> src/sheldon/plugins.toml
@@ -175,7 +183,8 @@ _update_plugins() {
     # Zgenom
     if [ -z "$kind" ] || [ "$kind" = "zgenom" ]; then
         echo '#!/usr/bin/env zsh' > src/zgenom/zshrc
-        echo 'source "/root/.zgenom/zgenom.zsh"' >> src/zgenom/zshrc
+        echo 'export ZGEN_DIR=/root/.zgenom' >> src/zgenom/zshrc
+        echo 'source "$ZGEN_DIR/zgenom.zsh"' >> src/zgenom/zshrc
         echo 'if ! zgenom saved; then' >> src/zgenom/zshrc
         for line in $plugins; do
             IFS="@" read -r plugin branch <<< "$line"
@@ -183,6 +192,15 @@ _update_plugins() {
         done
         echo '  zgenom save' >> src/zgenom/zshrc
         echo 'fi' >> src/zgenom/zshrc
+    fi
+
+    # Zimfw
+    if [ -z "$kind" ] || [ "$kind" = "zimfw" ]; then
+        echo "" > src/zimfw/.zimrc
+        for line in $plugins; do
+            IFS="@" read -r plugin branch <<< "$line"
+            echo "zmodule $plugin" >> src/zimfw/.zimrc
+        done
     fi
 
     # Zinit
@@ -328,6 +346,12 @@ command_versions() {
     if [ -z "$kind" ] || [ "$kind" = "zinit" ]; then
         version=$(_docker_run base git -C /root/.zinit/bin rev-parse --short HEAD)
         echo "zinit master @ $version"
+    fi
+
+    # Zimfw
+    if [ -z "$kind" ] || [ "$kind" = "zimfw" ]; then
+        version=$(_docker_run base zsh -c 'export ZIM_HOME=/root/.zim; source $ZIM_HOME/zimfw.zsh version;')
+        echo "zimfw v$version"
     fi
 
     # Zplug

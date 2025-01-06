@@ -1,5 +1,4 @@
 zsh-users/zsh-autosuggestions
-wting/autojump
 zsh-users/zsh-syntax-highlighting
 StackExchange/blackbox
 b4b4r07/enhancd
@@ -7,7 +6,6 @@ fcambus/ansiweather
 zsh-users/zsh-history-substring-search
 supercrabtree/k
 chriskempson/base16-shell
-wfxr/forgit
 zdharma/fast-syntax-highlighting@main
 larkery/zsh-histdb
 MichaelAquilina/zsh-you-should-use
@@ -21,6 +19,5 @@ Tarrasch/zsh-autoenv
 zsh-users/zaw
 djui/alias-tips
 changyuheng/fz
-b4b4r07/emoji-cli
 Tarrasch/zsh-bd
 zdharma/history-search-multi-word@main

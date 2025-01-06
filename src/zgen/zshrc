@@ -2,7 +2,6 @@
 source "/root/.zgen/zgen.zsh"
 if ! zgen saved; then
   zgen load zsh-users/zsh-autosuggestions "" master
-  zgen load wting/autojump "" master
   zgen load zsh-users/zsh-syntax-highlighting "" master
   zgen load StackExchange/blackbox "" master
   zgen load b4b4r07/enhancd "" master
@@ -10,7 +9,6 @@ if ! zgen saved; then
   zgen load zsh-users/zsh-history-substring-search "" master
   zgen load supercrabtree/k "" master
   zgen load chriskempson/base16-shell "" master
-  zgen load wfxr/forgit "" master
   zgen load zdharma/fast-syntax-highlighting "" main
   zgen load larkery/zsh-histdb "" master
   zgen load MichaelAquilina/zsh-you-should-use "" master
@@ -24,7 +22,6 @@ if ! zgen saved; then
   zgen load zsh-users/zaw "" master
   zgen load djui/alias-tips "" master
   zgen load changyuheng/fz "" master
-  zgen load b4b4r07/emoji-cli "" master
   zgen load Tarrasch/zsh-bd "" master
   zgen load zdharma/history-search-multi-word "" main
   zgen save
