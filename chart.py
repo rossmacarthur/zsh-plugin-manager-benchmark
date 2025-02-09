@@ -19,7 +19,11 @@ def get_data():
             if info["kind"] == "base":
                 continue
             with open(os.path.join("results", filename), "r") as f:
-                results = json.load(f)["results"]
+                try:
+                    results = json.load(f)["results"]
+                except json.JSONDecodeError:
+                    print(f"Error reading {filename}", file=sys.stderr)
+                    continue
                 assert len(results) == 1
                 file_data = results[0]
                 file_data.update(info)
@@ -32,8 +36,9 @@ def get_data():
 
 def chart(ty):
     df = get_data()
-    sns.set(rc={"figure.dpi": 300, "savefig.dpi": 300}, font_scale=0.9)
-    g = sns.barplot(data=df[df.type == ty], x="kind", y="times", palette="pastel")
+    sns.set_theme(rc={"figure.dpi": 300, "savefig.dpi": 300}, font_scale=0.9)
+
+    g = sns.barplot(data=df[df.type == ty], x="kind", y="times", hue="kind", palette="pastel")
     g.set(
         title=f"{ty.title()} time",
         xlabel="",

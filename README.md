@@ -5,8 +5,9 @@ Benchmark different Zsh plugin managers.
 ## Summary
 
 - [antibody<sup>⚠️</sup>][antibody], [antidote],
-  [antigen<sup>⚠️</sup>][antigen], and [sheldon] all have excellent performance
-  in both install time and load time.
+  [antigen<sup>⚠️</sup>][antigen], [sheldon], [zimfw] all have excellent
+  performance in both install time and load time and performance would not be
+  a reason to choose one over the other.
 - [zgen<sup>⚠️</sup>][zgen] and [zgenom] are on par with the above when it comes
   to load time, but don't seem to do installation in parallel.
 - [zinit], [zplug] and [zpm] have notably bad load time performance.
@@ -15,14 +16,15 @@ Benchmark different Zsh plugin managers.
 
 - The following plugin managers are benchmarked:
   - [antibody] v6.1.1 (⚠️ archived)
-  - [antidote] v1.8.6
+  - [antidote] v1.9.7
   - [antigen] v2.2.2 (⚠️ unmaintained)
-  - [sheldon] v0.7.3
+  - [sheldon] v0.8.0
   - [zgen] master @ 0b669d2 (⚠️ unmaintained)
-  - [zgenom] main @ 2b55d9d
-  - [zinit] main @ de85908f
+  - [zgenom] main @ ebb37d1
+  - [zimfw] v1.16.0
+  - [zinit] master @ c346949
   - [zplug] master @ ac6c2a3
-  - [zpm] master @ 16d74f8
+  - [zpm] master @ d4173b3
   - *If you would like to add a new plugin manager feel free to open an issue
     and/or pull request.*
 
@@ -32,7 +34,7 @@ Benchmark different Zsh plugin managers.
   - *load* time is the time taken for each subsequent load of the `~/.zshrc`
     until a prompt appears.
 
-- 26 of some of the most popular plugins (by GitHub stars) listed in [Awesome
+- 23 of some of the most popular plugins (by GitHub stars) listed in [Awesome
   Zsh Plugins](https://github.com/unixorn/awesome-zsh-plugins/) were used as as
   test case. See [plugins.txt](./src/plugins.txt). The plugins were extracted
   using [awesome-star-count].
@@ -54,19 +56,12 @@ Benchmark different Zsh plugin managers.
 [sheldon]: https://github.com/rossmacarthur/sheldon
 [zgen]: https://github.com/tarjoilija/zgen
 [zgenom]: https://github.com/jandamm/zgenom
+[zimfw]: https://github.com/zimfw/zimfw
 [zinit]: https://github.com/zdharma-continuum/zinit
 [zplug]: https://github.com/zplug/zplug
 [zpm]: https://github.com/zpm-zsh/zpm
 
 ## Results
-
-### Install time
-
-<img alt="Install time" src="results/install.png" width="600"/>
-
-Lower is better. Although install time is not as important as load time it is
-probably at least worth doing the install in parallel. From these results its
-very clear which plugin managers install in parallel vs sequential.
 
 ### Load time
 
@@ -75,15 +70,24 @@ very clear which plugin managers install in parallel vs sequential.
 Lower is better. This is the metric we care about most because its the time it
 takes to open a new shell until we get a usable prompt.
 
+### Install time
+
+<img alt="Install time" src="results/install.png" width="600"/>
+
+Lower is better. Although install time is not as important as load time it is
+probably at least worth doing the install in parallel. From these results its
+very clear which plugin managers install in parallel vs sequential. Note:
+network jitter can cause some variation in the results for install time.
+
 ### Details
 
 #### Host
 
-- Vultr.com
-- Ubuntu 22.04
-- 8 vCPUs
-- 16 GB RAM
-- NVMe storage
+- Apple M2 Max
+- 32 GB RAM
+- macOS 15.2
+- Docker for Mac v4.38.0
+  - Engine: v27.5.1
 
 ## Usage
 
